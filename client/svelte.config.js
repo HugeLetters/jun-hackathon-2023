@@ -14,7 +14,7 @@ const config = {
 		adapter: adapter(),
 		typescript: {
 			config(config) {
-				config.include.push('../run.js');
+				config.include.push('../scripts**/*.js', '../scripts**/*.ts');
 			}
 		}
 	}

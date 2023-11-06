@@ -5,9 +5,10 @@ services:
     build: ./client
     working_dir: /client
     container_name: client
-    command: node run.js
+    command: node scripts/run.js
     volumes:
       - ./client/.svelte-kit/:/client/.svelte-kit/
+      - ./client/scripts/:/client/scripts/
       - ./client/src/:/client/src/
       - ./client/static/:/client/static/
       - ./client/package.json:/client/package.json
