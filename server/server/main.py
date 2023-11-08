@@ -17,7 +17,7 @@ class Hello(BaseModel):
 
 @app.get("/")
 def read_root() -> Hello:
-    return {"Hello": "World"}
+    return Hello(Hello="Привет, мир!")
 
 
 @app.get("/items/{item_id}")
