@@ -13,11 +13,11 @@ class Item(BaseModel):
     is_offer: Union[bool, None] = None
 
 class Hello(BaseModel):
-    Hello: str
+    Greeting: str
 
 @app.get("/")
 def read_root() -> Hello:
-    return Hello(Hello="Привет, мир!")
+    return Hello(Greeting="Привет, мир!")
 
 
 @app.get("/items/{item_id}")
