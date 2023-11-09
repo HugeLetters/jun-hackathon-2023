@@ -12,8 +12,10 @@ class Item(BaseModel):
     price: float
     is_offer: Union[bool, None] = None
 
+
 class Hello(BaseModel):
     Greeting: str
+
 
 @app.get("/")
 def read_root() -> Hello:
@@ -30,7 +32,7 @@ def update_item(item_id: int, item: Item):
     return {"item_name": item.name, "item_id": item_id}
 
 
-# generate json spec file - required for client 
+# generate json spec file - required for client
 with open('openapi.json', 'w') as f:
     json.dump(get_openapi(
         title=app.title,

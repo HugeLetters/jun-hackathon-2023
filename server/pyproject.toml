@@ -10,6 +10,7 @@ python = "^3.10"
 fastapi = "^0.104.1"
 uvicorn = "^0.24.0.post1"
 mypy = "^1.6.1"
+flake8 = "^6.1.0"
 
 
 [build-system]
