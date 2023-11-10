@@ -5,7 +5,7 @@ from typing import Union
 import json
 
 app = FastAPI(root_path="/api/")
-
+print("Server started")
 
 class Item(BaseModel):
     name: str

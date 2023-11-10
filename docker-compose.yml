@@ -21,6 +21,7 @@ services:
       - .env
     environment:
       - PUBLIC_IS_DOCKER=true
+      - PUBLIC_ENV=dev
 
   server:
     build: ./server
