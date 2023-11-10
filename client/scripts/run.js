@@ -1,5 +1,5 @@
-import { spawn } from 'node:child_process';
 import { watchFile } from 'fs';
+import { spawn } from 'node:child_process';
 
 runDockerProcess();
 export default function runDockerProcess() {
@@ -9,6 +9,7 @@ export default function runDockerProcess() {
 		watchFile('./package.json', () => {
 			spawn('pnpm install', { shell: true, stdio: 'inherit' });
 		});
+
 		spawn('pnpm dev', { shell: true, stdio: 'inherit' });
 	});
 }

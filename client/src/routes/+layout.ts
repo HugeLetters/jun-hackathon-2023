@@ -1,4 +1,5 @@
 import { browser } from '$app/environment';
+import { api } from '$lib';
 import { QueryClient } from '@tanstack/svelte-query';
 
 export async function load() {
@@ -9,11 +10,13 @@ export async function load() {
 			}
 		}
 	});
-	queryClient.prefetchQuery({
-		queryKey: [1],
+
+	await queryClient.prefetchQuery({
+		queryKey: [['root', 'get']],
 		queryFn() {
-			return 1;
+			return api.GET('/');
 		}
 	});
+
 	return { queryClient };
 }
