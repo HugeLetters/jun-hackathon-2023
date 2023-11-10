@@ -26,7 +26,7 @@
 # either
 sudo docker compose up
 #or
-sudo bash dev.sh
+sudo bash run.sh
 ```
 ## Hosted
 Hosted on Render.com - https://jun-hackathon.onrender.com/
