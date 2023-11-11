@@ -8,6 +8,7 @@ export let label: string;
 
 const {
 	elements: { range, root, thumb },
+	states: { value: rangeValue },
 } = createSlider({
 	defaultValue: [color.type === "hsl" ? color[property] : 0],
 	onValueChange({ next }) {
@@ -44,7 +45,7 @@ const {
 			<div
 				class="aspect-square h-5 w-5 rounded-full bg-purple-300"
 				style="{property === 'color'
-					? `background-color: hsl(${color.type === 'hsl' ? color.color : 0} 100% 50%);`
+					? `background-color: hsl(${$rangeValue[0] ?? 0} 100% 50%);`
 					: ''} "
 			/>
 		</button>

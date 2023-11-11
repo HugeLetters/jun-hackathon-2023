@@ -43,7 +43,7 @@ function updateElementList() {
 </script>
 
 <div class="grid min-h-screen grid-cols-5">
-	<div class="flex flex-col bg-neutral-900 p-2">
+	<div class="flex w-24 flex-col bg-neutral-900 p-5">
 		<BackgroundController bind:background={$project.background} />
 		<button
 			on:click={() => {
@@ -68,29 +68,11 @@ function updateElementList() {
 			on:click={() => {
 				const { width, height } = canvas.getBoundingClientRect();
 				const doc = new jsPDF({ orientation: "landscape", format: [width, height] });
-
-				// canvas.querySelectorAll("[data-type=text][href]").forEach((el) => {
-				// 	if (!(el instanceof HTMLElement)) return;
-				// 	doc.textWithLink("this is link", 20, 20, {
-				// 		url: el.getAttribute("href"),
-				// 	});
-				// 	console.log(el.getAttribute("href"));
-				// 	console.log(el["clientWidth"]);
-				// });
-				// doc.textWithLink("this is link", 20, 20, {
-				// 	url: "https://www.youtube.com/feed/subscriptions",
-				// });
 				doc.html(canvas, {
 					callback(doc) {
 						doc.deletePage(doc.getNumberOfPages());
 						doc.save("./project.pdf");
 					},
-					// html2canvas: {
-					// ignoreElements(element) {
-					// return false;
-					// return element.getAttribute("data-type") === "text" && !!element.getAttribute("href");
-					// },
-					// },
 				});
 			}}
 		>
