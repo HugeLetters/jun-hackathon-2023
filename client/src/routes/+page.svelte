@@ -9,8 +9,8 @@ let elementList: ElementType[] = [];
 let canvas: HTMLElement;
 </script>
 
-<div class="min-h-screen grid grid-cols-5">
-	<div class="bg-neutral-400 flex flex-col p-2">
+<div class="grid min-h-screen grid-cols-5">
+	<div class="flex flex-col bg-neutral-400 p-2">
 		UI
 		<input
 			bind:value={bgColor}
@@ -29,9 +29,9 @@ let canvas: HTMLElement;
 			add element {elementList[0]?.position.join(", ")}
 		</button>
 	</div>
-	<div class="col-span-4 flex items-center justify-center min-w-fit">
+	<div class="col-span-4 flex min-w-fit items-center justify-center">
 		<div
-			class="relative bg-[color:var(--bg-color)] bg-[image:var(--bg-gradient)] aspect-video h-[512px]"
+			class="relative aspect-video h-[512px] overflow-hidden bg-[color:var(--bg-color)] bg-[image:var(--bg-gradient)]"
 			style="--bg-color: {bgColor || 'aqua'}; --bg-gradient: {bgGradient}"
 			bind:this={canvas}
 		>
