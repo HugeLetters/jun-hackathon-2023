@@ -1,19 +1,27 @@
 <script lang="ts">
 import { drag } from "$lib/hooks";
 import type { ElementType } from "$lib/type";
+import ImageElement from "./ImageElement.svelte";
+import TextElement from "./TextElement.svelte";
 
 export let element: ElementType;
 export let canvas: HTMLElement;
 export let focusedElement: ElementType | null;
+export let deleteElement: () => void;
 </script>
 
 <button
 	on:focus|capture={() => {
 		focusedElement = element;
 	}}
+	on:keydown={(e) => {
+		if (e.key === "Delete") {
+			deleteElement();
+		}
+	}}
 	data-type={element.type}
 	data-href={element.type === "text" ? element.href : undefined}
-	class="absolute max-h-full max-w-full overflow-hidden outline-black focus-within:outline"
+	class="absolute max-h-full max-w-full rounded-sm outline-offset-8 outline-black/20 focus-within:outline"
 	class:italic={element.type === "text" && element.italic}
 	class:underline={element.type === "text" && element.underline}
 	style="left: {element.position[0]}px; top: {element.position[1]}px;
@@ -30,17 +38,9 @@ export let focusedElement: ElementType | null;
 	}}
 >
 	{#if element.type === "text"}
-		<textarea
-			bind:value={element.content}
-			class="h-full w-full resize-none overflow-hidden bg-transparent outline-none"
-			style="text-align: {element.align ?? 'center'};"
-		/>
+		<TextElement bind:element />
 	{:else if element.type === "image"}
-		<img
-			src={element.src}
-			alt=""
-			class="h-20 object-fill"
-		/>
+		<ImageElement bind:element />
 	{:else}
 		{element.type}
 	{/if}

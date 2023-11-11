@@ -1,7 +1,8 @@
 <script lang="ts">
 import Element from "$lib/components/Element.svelte";
-import TextElementController from "$lib/components/TextElementController.svelte";
 import ElementController from "$lib/components/ElementController.svelte";
+import TextElementController from "$lib/components/TextElementController.svelte";
+import { getLastProjectStore } from "$lib/hooks";
 import type { ElementType } from "$lib/type";
 import { toJpeg, toPng } from "html-to-image";
 import { jsPDF } from "jspdf";
@@ -11,33 +12,8 @@ export let data;
 let bgColor = "";
 let bgGradient = "";
 
-let elementList: ElementType[] = [
-	{
-		type: "text",
-		content: "one",
-		position: [50, 50],
-		size: [500, 100],
-		color: "red",
-		font: "Courier",
-		weight: 200,
-		fontSize: 3,
-		align: "center",
-		italic: true,
-		href: "link",
-		underline: true,
-	},
-	{
-		type: "text",
-		content: "two",
-		position: [800, 100],
-		size: [100, 200],
-		color: "blue",
-		font: "ui-monospace",
-		weight: 900,
-		fontSize: 2,
-	},
-	{ type: "image", position: [200, 100], size: [3, 2], src: data.assets[0] ?? "" },
-];
+const elementList = getLastProjectStore();
+
 let focusedElement: ElementType | null = null;
 let canvas: HTMLElement;
 
@@ -63,7 +39,7 @@ function downloadImage(type: SupportedImage) {
 	});
 }
 function updateElementList() {
-	elementList = elementList;
+	$elementList = $elementList;
 }
 </script>
 
@@ -82,7 +58,7 @@ function updateElementList() {
 			on:click={() => {
 				const { width, height } = canvas.getBoundingClientRect();
 
-				elementList.push({
+				$elementList.push({
 					position: [width / 2, height / 2],
 					type: "text",
 					color: "black",
@@ -92,7 +68,7 @@ function updateElementList() {
 					fontSize: 1,
 					size: [100, 100],
 				});
-				elementList = elementList;
+				$elementList = $elementList;
 			}}
 		>
 			add element
@@ -145,7 +121,7 @@ function updateElementList() {
 		</button>
 		<button
 			on:click={() => {
-				elementList = [];
+				$elementList = [];
 			}}
 		>
 			clear
@@ -154,13 +130,13 @@ function updateElementList() {
 			{#each data.assets as asset}
 				<button
 					on:click={() => {
-						elementList.push({
+						$elementList.push({
 							type: "image",
 							src: asset,
 							position: [0, 0],
-							size: [1, 1],
+							size: [100, 100],
 						});
-						elementList = elementList;
+						$elementList = $elementList;
 					}}
 				>
 					<img
@@ -195,8 +171,11 @@ function updateElementList() {
 				style="--bg-color: {bgColor || 'aqua'}; --bg-gradient: {bgGradient}"
 				bind:this={canvas}
 			>
-				{#each elementList as element}
+				{#each $elementList as element}
 					<Element
+						deleteElement={() => {
+							$elementList = $elementList.filter((x) => x !== element);
+						}}
 						bind:focusedElement
 						bind:element
 						{canvas}

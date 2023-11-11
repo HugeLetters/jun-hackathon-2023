@@ -29,6 +29,9 @@ dependencies:
   postcss:
     specifier: ^8.4.31
     version: 8.4.31
+  svelte-persisted-store:
+    specifier: ^0.7.0
+    version: 0.7.0(svelte@4.2.3)
   tailwindcss:
     specifier: ^3.3.5
     version: 3.3.5
@@ -2399,6 +2402,15 @@ packages:
     dependencies:
       svelte: 4.2.3
     dev: true
+
+  /svelte-persisted-store@0.7.0(svelte@4.2.3):
+    resolution: {integrity: sha512-PczYS60ysScQ0DmTCPXQm5rwt8FfQzSlx0lCbljbE6hTCKqXaw2bP8KH1+B7QTPmuiy/QbAk4pjYpNCmZhjyRw==}
+    engines: {node: '>=0.14'}
+    peerDependencies:
+      svelte: ^3.48.0 || >4.0.0
+    dependencies:
+      svelte: 4.2.3
+    dev: false
 
   /svelte-preprocess@5.1.0(postcss@8.4.31)(svelte@4.2.3)(typescript@5.2.2):
     resolution: {integrity: sha512-EkErPiDzHAc0k2MF5m6vBNmRUh338h2myhinUw/xaqsLs7/ZvsgREiLGj03VrSzbY/TB5ZXgBOsKraFee5yceA==}
