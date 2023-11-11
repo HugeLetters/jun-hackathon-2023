@@ -1,50 +1,45 @@
 import type { Action } from "svelte/action";
-import { writable } from "svelte/store";
-import type { Boundary, Position } from "./type";
+import type { Position } from "./type";
 import { clamp } from "./utils";
 
-type CreateDragOptions = { initialPosition?: Position };
-export function createDrag({ initialPosition = [0, 0] }: CreateDragOptions) {
-	const position = writable(initialPosition);
-	let innerPosition = initialPosition;
-	position.subscribe((value) => {
-		innerPosition = value;
-	});
+export const drag: Action<
+	HTMLElement,
+	{ currentPosition: Position; canvas: HTMLElement; updatePosition: (position: Position) => void }
+> = function (node, { currentPosition, canvas, updatePosition }) {
+	node.draggable = true;
+	let [startX, startY] = [0, 0];
 
-	const drag: Action<HTMLElement, { boundary: Boundary }> = function (node, { boundary }) {
-		node.draggable = true;
-		let startX = 0;
-		let startY = 0;
-		const [left, top, right, bottom] = boundary;
+	function onDrag() {
+		node.style.opacity = "0";
+	}
+	function onDragStart(e: DragEvent) {
+		startX = e.clientX;
+		startY = e.clientY;
+		node.addEventListener("drag", onDrag, { once: true });
+	}
 
-		function onDrag() {
-			node.style.opacity = "0";
-		}
-		function onDragStart(e: DragEvent) {
-			startX = e.clientX;
-			startY = e.clientY;
-			node.addEventListener("drag", onDrag, { once: true });
-		}
+	function onDragEnd(e: DragEvent) {
+		node.style.opacity = "";
 
-		function onDragEnd(e: DragEvent) {
-			node.style.opacity = "";
-			const [currentX, currentY] = innerPosition;
+		const [currentX, currentY] = currentPosition;
+		const { left, top, right, bottom } = canvas.getBoundingClientRect();
+		const { height, width } = node.getBoundingClientRect();
 
-			position.set([
-				clamp(left, currentX + e.clientX - startX, right),
-				clamp(top, currentY + e.clientY - startY, bottom),
-			]);
-		}
-		node.addEventListener("dragstart", onDragStart);
-		node.addEventListener("dragend", onDragEnd);
+		updatePosition([
+			clamp(0, currentX + e.clientX - startX, right - left - width),
+			clamp(0, currentY + e.clientY - startY, bottom - top - height),
+		]);
+	}
+	node.addEventListener("dragstart", onDragStart);
+	node.addEventListener("dragend", onDragEnd);
 
-		return {
-			destroy() {
-				node.removeEventListener("dragstart", onDragStart);
-				node.removeEventListener("dragend", onDragEnd);
-			},
-		};
+	return {
+		update({ currentPosition: updatedPosition }) {
+			currentPosition = updatedPosition;
+		},
+		destroy() {
+			node.removeEventListener("dragstart", onDragStart);
+			node.removeEventListener("dragend", onDragEnd);
+		},
 	};
-
-	return { drag, position };
-}
+};

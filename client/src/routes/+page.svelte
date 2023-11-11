@@ -1,13 +1,12 @@
 <script lang="ts">
 import Element from "$lib/components/Element.svelte";
-import type { Boundary, ElementType } from "$lib/type";
-
-const BOUNDARY: Boundary = [0, 0, 1000, 1000];
+import type { ElementType } from "$lib/type";
 
 let bgColor = "";
 let bgGradient = "";
 
 let elementList: ElementType[] = [];
+let canvas: HTMLElement;
 </script>
 
 <div class="min-h-screen grid grid-cols-5">
@@ -23,22 +22,25 @@ let elementList: ElementType[] = [];
 		/>
 		<button
 			on:click={() => {
-				elementList.push({ position: [BOUNDARY[2] / 2, BOUNDARY[3] / 2], type: "text" });
+				elementList.push({ position: [50, 50], type: "text" });
 				elementList = elementList;
 			}}
 		>
-			add element
+			add element {elementList[0]?.position.join(", ")}
 		</button>
 	</div>
-	<div
-		class="relative col-span-4 bg-[color:var(--bg-color)] bg-[image:var(--bg-gradient)]"
-		style="--bg-color: {bgColor}; --bg-gradient: {bgGradient}"
-	>
-		{#each elementList as element}
-			<Element
-				{element}
-				virtualBoundary={BOUNDARY}
-			/>
-		{/each}
+	<div class="col-span-4 flex items-center justify-center min-w-fit">
+		<div
+			class="relative bg-[color:var(--bg-color)] bg-[image:var(--bg-gradient)] aspect-video h-[512px]"
+			style="--bg-color: {bgColor || 'aqua'}; --bg-gradient: {bgGradient}"
+			bind:this={canvas}
+		>
+			{#each elementList as element}
+				<Element
+					bind:element
+					{canvas}
+				/>
+			{/each}
+		</div>
 	</div>
 </div>

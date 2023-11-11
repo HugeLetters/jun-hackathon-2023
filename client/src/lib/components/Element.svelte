@@ -1,18 +1,21 @@
 <script lang="ts">
-import { createDrag } from "$lib/hooks";
-import type { Boundary, ElementType } from "$lib/type";
+import { drag } from "$lib/hooks";
+import type { ElementType } from "$lib/type";
 
 export let element: ElementType;
-export let virtualBoundary: Boundary;
-// export
-
-const { drag, position } = createDrag({ initialPosition: element.position });
+export let canvas: HTMLElement;
 </script>
 
 <button
 	class="absolute left-[var(--left)] top-[var(--top)]"
-	style="--left: {$position[0]}px; --top: {$position[1]}px"
-	use:drag={{ boundary: virtualBoundary }}
+	style="--left: {element.position[0]}px; --top: {element.position[1]}px"
+	use:drag={{
+		canvas,
+		currentPosition: element.position,
+		updatePosition(position) {
+			element.position = position;
+		},
+	}}
 >
 	{element.type}
 </button>
