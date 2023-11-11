@@ -13,7 +13,7 @@ uvicorn = "^0.24.0.post1"
 mypy = "^1.6.1"
 flake8 = "^6.1.0"
 psycopg2-binary = "^2.9.9"
-python-dotenv = "*"
+python-dotenv = "^1.0.0"
 
 
 [build-system]
