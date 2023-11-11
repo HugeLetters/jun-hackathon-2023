@@ -3,17 +3,9 @@ from fastapi.openapi.utils import get_openapi
 from pydantic import BaseModel
 from typing import Union
 import json
-
 import os
 
-# python_path = os.environ.get("PYTHONPATH")
-#
-# if python_path:
-#     print(f"PYTHONPATH is set to: {python_path}")
-# else:
-#     print("PYTHONPATH is not set.")
-#
-# from db import create_canvas
+
 
 app = FastAPI(root_path="/api/")
 print("Server started")
