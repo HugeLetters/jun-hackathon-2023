@@ -1,9 +1,14 @@
-import { Config } from 'tailwindcss';
+import { Config } from "tailwindcss";
+import defaultTheme from "tailwindcss/defaultTheme";
 
 export default {
-	content: ['./src/**/*.{html,js,svelte,ts}'],
+	content: ["./src/**/*.{html,js,svelte,ts}"],
 	theme: {
-		extend: {}
+		extend: {
+			fontFamily: {
+				roboto: ["Roboto", ...defaultTheme.fontFamily.sans],
+			},
+		},
 	},
-	plugins: []
+	plugins: [],
 } satisfies Config;

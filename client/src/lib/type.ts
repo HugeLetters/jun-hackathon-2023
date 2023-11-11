@@ -1,6 +1,14 @@
 export type ElementKind = keyof ElementTypeExtraProps;
 export type Position = [x: number, y: number];
 export type Size = [w: number, h: number];
+export type GradientColor = {
+	type: "gradient";
+	degree: number;
+	colors: [number, number, ...number[]];
+};
+export type HslColor = { type: "hsl"; color: number; saturation: number; lightness: number };
+export type StringColor = { type: "color"; color: string };
+export type BgColor = GradientColor | HslColor | StringColor;
 export type ElementType<TKind extends ElementKind = ElementKind> = TKind extends TKind
 	? {
 			type: TKind;
@@ -22,9 +30,13 @@ export type ElementTypeExtraProps = {
 		font: string;
 	};
 	image: { src: string };
-	shape: { subtype: "circle" | "triangle" | "square"; color: string };
+	shape: { subtype: "circle" | "triangle" | "square"; color: BgColor };
 	line: {
 		color: string;
 		points: string[];
 	};
+};
+export type Background = {
+	color: BgColor;
+	opacity?: number;
 };

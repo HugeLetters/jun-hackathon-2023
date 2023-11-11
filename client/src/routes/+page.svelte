@@ -2,16 +2,16 @@
 import Element from "$lib/components/Element.svelte";
 import ElementController from "$lib/components/ElementController.svelte";
 import TextElementController from "$lib/components/TextElementController.svelte";
+import BackgroundController from "$lib/components/sidebar/BackgroundController.svelte";
 import { getLastProjectStore } from "$lib/hooks";
 import type { ElementType } from "$lib/type";
+import { colorToString } from "$lib/utils";
 import { toJpeg, toPng } from "html-to-image";
 import { jsPDF } from "jspdf";
 
 export let data;
 
-let bgColor = "";
-
-const elementList = getLastProjectStore();
+const project = getLastProjectStore();
 
 let focusedElement: ElementType | null = null;
 let canvas: HTMLElement;
@@ -38,22 +38,18 @@ function downloadImage(type: SupportedImage) {
 	});
 }
 function updateElementList() {
-	$elementList = $elementList;
+	$project = $project;
 }
 </script>
 
 <div class="grid min-h-screen grid-cols-5">
-	<div class="flex flex-col bg-neutral-400 p-2">
-		UI
-		<input
-			bind:value={bgColor}
-			placeholder="bg color"
-		/>
+	<div class="flex flex-col bg-neutral-900 p-2">
+		<BackgroundController bind:background={$project.background} />
 		<button
 			on:click={() => {
 				const { width, height } = canvas.getBoundingClientRect();
 
-				$elementList.push({
+				$project.elements.push({
 					position: [width / 2, height / 2],
 					type: "text",
 					color: "black",
@@ -63,7 +59,7 @@ function updateElementList() {
 					fontSize: 1,
 					size: [100, 100],
 				});
-				$elementList = $elementList;
+				$project.elements = $project.elements;
 			}}
 		>
 			add text element
@@ -116,7 +112,8 @@ function updateElementList() {
 		</button>
 		<button
 			on:click={() => {
-				$elementList = [];
+				$project.elements = [];
+				$project.background = { color: { type: "color", color: "white" } };
 			}}
 		>
 			clear
@@ -125,13 +122,13 @@ function updateElementList() {
 			{#each data.assets as asset}
 				<button
 					on:click={() => {
-						$elementList.push({
+						$project.elements.push({
 							type: "image",
 							src: asset,
 							position: [0, 0],
 							size: [100, 100],
 						});
-						$elementList = $elementList;
+						$project = $project;
 					}}
 				>
 					<img
@@ -162,14 +159,14 @@ function updateElementList() {
 		</div>
 		<div class="my-auto flex min-w-fit items-center justify-center">
 			<div
-				class="relative z-0 aspect-video h-[512px] overflow-hidden bg-[color:var(--bg-color)] bg-[image:var(--bg-gradient)]"
-				style="background: {bgColor ?? 'white'}"
+				class="relative z-0 aspect-video h-[512px] overflow-hidden"
+				style="background: {colorToString($project.background.color) ?? 'white'}"
 				bind:this={canvas}
 			>
-				{#each $elementList as element}
+				{#each $project.elements as element}
 					<Element
 						deleteElement={() => {
-							$elementList = $elementList.filter((x) => x !== element);
+							$project.elements = $project.elements.filter((x) => x !== element);
 						}}
 						bind:focusedElement
 						bind:element

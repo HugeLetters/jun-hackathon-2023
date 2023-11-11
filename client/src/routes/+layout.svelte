@@ -1,6 +1,7 @@
 <script lang="ts">
-import "../app.pcss";
+import "@fontsource/roboto";
 import { QueryClientProvider } from "@tanstack/svelte-query";
+import "../app.pcss";
 
 export let data;
 </script>
