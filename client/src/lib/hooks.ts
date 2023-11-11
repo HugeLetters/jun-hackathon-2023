@@ -5,37 +5,47 @@ import { clamp } from "./utils";
 export const drag: Action<
 	HTMLElement,
 	{ currentPosition: Position; canvas: HTMLElement; updatePosition: (position: Position) => void }
-> = function (node, { currentPosition, canvas, updatePosition }) {
+> = function (node, options) {
 	node.draggable = true;
 	let [startX, startY] = [0, 0];
 
-	function onDrag() {
-		node.style.opacity = "0";
+	let transform: string;
+	function onDrag(e: DragEvent) {
+		node.style.transform = `translate(${e.clientX - startX}px, ${
+			e.clientY - startY
+		}px) ${transform}`;
 	}
 	function onDragStart(e: DragEvent) {
+		if (e.currentTarget instanceof HTMLElement) {
+			e.dataTransfer?.setDragImage(document.createElement("div"), 0, 0);
+		}
+		transform = node.style.transform;
 		startX = e.clientX;
 		startY = e.clientY;
-		node.addEventListener("drag", onDrag, { once: true });
+		node.addEventListener("drag", onDrag);
 	}
 
 	function onDragEnd(e: DragEvent) {
 		node.style.opacity = "";
+		node.style.transform = transform;
 
-		const [currentX, currentY] = currentPosition;
-		const { left, top, right, bottom } = canvas.getBoundingClientRect();
+		const [currentX, currentY] = options.currentPosition;
+		const { left, top, right, bottom } = options.canvas.getBoundingClientRect();
 		const { height, width } = node.getBoundingClientRect();
 
-		updatePosition([
-			clamp(0, currentX + e.clientX - startX, right - left - width),
-			clamp(0, currentY + e.clientY - startY, bottom - top - height),
+		options.updatePosition([
+			clamp(-0.9 * width, currentX + e.clientX - startX, right - left - 0.1 * width),
+			clamp(-0.9 * height, currentY + e.clientY - startY, bottom - top - 0.1 * height),
 		]);
+
+		node.removeEventListener("drag", onDrag);
 	}
 	node.addEventListener("dragstart", onDragStart);
 	node.addEventListener("dragend", onDragEnd);
 
 	return {
-		update({ currentPosition: updatedPosition }) {
-			currentPosition = updatedPosition;
+		update(updatedOptions) {
+			options = updatedOptions;
 		},
 		destroy() {
 			node.removeEventListener("dragstart", onDragStart);
