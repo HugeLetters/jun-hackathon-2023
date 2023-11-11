@@ -42,7 +42,7 @@ function updateElementList() {
 }
 </script>
 
-<div class="grid min-h-screen grid-cols-5">
+<div class="flex min-h-screen">
 	<div class="flex w-24 flex-col bg-neutral-900 p-5">
 		<BackgroundController bind:background={$project.background} />
 		<button
@@ -122,7 +122,7 @@ function updateElementList() {
 			{/each}
 		</div>
 	</div>
-	<div class="col-span-4 flex flex-col">
+	<div class="flex grow flex-col">
 		<div>
 			header ui
 			{#if focusedElement}
@@ -141,7 +141,7 @@ function updateElementList() {
 		</div>
 		<div class="my-auto flex min-w-fit items-center justify-center">
 			<div
-				class="relative z-0 aspect-video h-[512px] overflow-hidden"
+				class="relative z-0 aspect-video w-[1400px] overflow-hidden"
 				style="background: {colorToString($project.background.color) ?? 'white'}"
 				bind:this={canvas}
 			>
