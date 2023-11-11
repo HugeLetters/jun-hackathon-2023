@@ -17,3 +17,12 @@ class DatabaseConnection:
         self.db.commit()
         self.cursor.close()
         self.db.close()
+
+
+def create_canvas(name, background_color):
+    with DatabaseConnection() as cursor:
+        cursor.execute(
+            "INSERT INTO canvas(name, background_color) VALUES (%s, %s) RETURNING id",
+            (name, background_color,)
+        )
+        return cursor.fetchone()[0]
