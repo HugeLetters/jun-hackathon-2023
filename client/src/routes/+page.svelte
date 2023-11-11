@@ -10,7 +10,6 @@ import { jsPDF } from "jspdf";
 export let data;
 
 let bgColor = "";
-let bgGradient = "";
 
 const elementList = getLastProjectStore();
 
@@ -50,10 +49,6 @@ function updateElementList() {
 			bind:value={bgColor}
 			placeholder="bg color"
 		/>
-		<input
-			bind:value={bgGradient}
-			placeholder="bg gradient"
-		/>
 		<button
 			on:click={() => {
 				const { width, height } = canvas.getBoundingClientRect();
@@ -63,15 +58,15 @@ function updateElementList() {
 					type: "text",
 					color: "black",
 					font: "ui-serif",
-					content: "new",
-					weight: 100,
+					content: "text",
+					weight: 400,
 					fontSize: 1,
 					size: [100, 100],
 				});
 				$elementList = $elementList;
 			}}
 		>
-			add element
+			add text element
 		</button>
 		<button
 			on:click={() => {
@@ -154,12 +149,12 @@ function updateElementList() {
 			{#if focusedElement}
 				<div>{focusedElement.position}</div>
 				<ElementController
-					element={focusedElement}
+					bind:element={focusedElement}
 					update={updateElementList}
 				/>
 				{#if focusedElement.type === "text"}
 					<TextElementController
-						element={focusedElement}
+						bind:element={focusedElement}
 						update={updateElementList}
 					/>
 				{/if}
@@ -168,7 +163,7 @@ function updateElementList() {
 		<div class="my-auto flex min-w-fit items-center justify-center">
 			<div
 				class="relative z-0 aspect-video h-[512px] overflow-hidden bg-[color:var(--bg-color)] bg-[image:var(--bg-gradient)]"
-				style="--bg-color: {bgColor || 'aqua'}; --bg-gradient: {bgGradient}"
+				style="background: {bgColor ?? 'white'}"
 				bind:this={canvas}
 			>
 				{#each $elementList as element}

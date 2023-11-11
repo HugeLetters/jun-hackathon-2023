@@ -8,10 +8,15 @@ export let update: () => void;
 <input
 	bind:value={element.size[0]}
 	on:input={update}
-	placeholder="focused width"
+	placeholder="width"
 />
 <input
 	bind:value={element.size[1]}
 	on:input={update}
-	placeholder="focused height"
+	placeholder="height"
+/>
+<input
+	bind:value={element.opacity}
+	on:input={update}
+	placeholder="opacity"
 />

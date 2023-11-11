@@ -8,15 +8,23 @@ export let update: () => void;
 <input
 	bind:value={element.color}
 	on:input={update}
-	placeholder="focused color"
+	placeholder="color"
 />
 <input
 	bind:value={element.font}
 	on:input={update}
-	placeholder="focused font"
+	placeholder="font"
 />
 <input
 	bind:value={element.fontSize}
 	on:input={update}
-	placeholder="focused size"
+	placeholder="size"
 />
+<select
+	bind:value={element.align}
+	on:change={update}
+>
+	<option value="center">center</option>
+	<option value="right">right</option>
+	<option value="left">left</option>
+</select>

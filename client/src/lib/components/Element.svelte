@@ -25,7 +25,7 @@ export let deleteElement: () => void;
 	class:italic={element.type === "text" && element.italic}
 	class:underline={element.type === "text" && element.underline}
 	style="left: {element.position[0]}px; top: {element.position[1]}px;
-	width: {element.size[0]}px; height: {element.size[1]}px;
+	width: {element.size[0]}px; height: {element.size[1]}px; opacity: {element.opacity ?? 1};
 	{element.type === 'text'
 		? `font-family: ${element.font}; color: ${element.color}; font-size: ${element.fontSize}rem; font-weight: ${element.weight}`
 		: ''}"

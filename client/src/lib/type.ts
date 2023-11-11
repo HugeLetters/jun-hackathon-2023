@@ -6,6 +6,7 @@ export type ElementType<TKind extends ElementKind = ElementKind> = TKind extends
 			type: TKind;
 			position: Position;
 			size: Size;
+			opacity?: number;
 	  } & ElementTypeExtraProps[TKind]
 	: never;
 export type ElementTypeExtraProps = {
@@ -21,7 +22,7 @@ export type ElementTypeExtraProps = {
 		font: string;
 	};
 	image: { src: string };
-	shape: { color: string };
+	shape: { subtype: "circle" | "triangle" | "square"; color: string };
 	line: {
 		color: string;
 		points: string[];
