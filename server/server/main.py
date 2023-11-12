@@ -44,11 +44,40 @@ def update_item(item_id: int, item: Item):
     return {"item_name": item.name, "item_id": item_id}
 
 
-@app.post("/canvas/")
-async def post_canvas(background_color: str ='white') -> dict:
-    canvas_id = await db.create_canvas(background_color)
-    print(canvas_id)
-    return {"canvas_id": canvas_id}
+@app.post("/projects/")
+async def add_project(background_color: str ='white') -> dict:
+    project_id = await db.create_project(background_color)
+    return {"project_id": project_id}
+
+
+@app.post("/elements/")
+async def add_element(project_id: int, type: str, position_x: float, position_y: float, size_x: float, size_y:float, opacity: float) -> dict:
+    element_id = await db.create_element(project_id, type, position_x, position_y, size_x, size_y, opacity)
+    return {"element_id": element_id}
+
+
+#  params_for_update словарь с ключами и новыми значениями
+# например {"type": "QQAZWS", "position_x": 123.123}
+# возвращает словарь обновленных значений
+@app.put("/elements/{element_id}")
+async def update_element(element_id: int, params_for_update: dict) -> dict:
+    resulted_values = {}
+    for param, value in params_for_update.items():
+        new_val = await db.update_element(element_id, param, value)
+        resulted_values[param] = new_val
+    return resulted_values
+
+
+@app.delete("/elements/{element_id}")
+async def delete_element(element_id: int):
+    await db.delete_element(element_id)
+    return 'element deleted'
+
+
+@app.get("/elements/{element_id}")
+async def read_element(element_id: int) -> dict:
+    element = await db.read_element(element_id)
+    return element
 
 
 # generate json spec file - required for client
