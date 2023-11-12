@@ -35,7 +35,7 @@ const {
 	<div
 		use:melt={$content}
 		transition:turn={{ duration: 150, offsetOrigin: 15, rotateTo: 50 }}
-		class="grid translate-x-5 grid-cols-3 gap-4 rounded-lg bg-neutral-900 p-4"
+		class="grid w-48 translate-x-5 grid-cols-3 gap-4 rounded-lg bg-neutral-900 p-4"
 	>
 		{#each shapes as shape}
 			<button
@@ -50,7 +50,7 @@ const {
 					elements = elements;
 					$open = false;
 				}}
-				class="h-6 w-6"
+				class="aspect-square basis-1/3"
 			>
 				<ShapeElement element={{ subtype: shape, color: randomRecordEntry(COLORS) }} />
 			</button>
