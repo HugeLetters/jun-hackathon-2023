@@ -2,6 +2,7 @@
 import { drag } from "$lib/hooks";
 import type { ElementType } from "$lib/type";
 import ImageElement from "./ImageElement.svelte";
+import ShapeElement from "./ShapeElement.svelte";
 import TextElement from "./TextElement.svelte";
 
 export let element: ElementType;
@@ -41,6 +42,8 @@ export let deleteElement: () => void;
 		<TextElement bind:element />
 	{:else if element.type === "image"}
 		<ImageElement bind:element />
+	{:else if element.type === "shape"}
+		<ShapeElement bind:element />
 	{:else}
 		{element.type}
 	{/if}

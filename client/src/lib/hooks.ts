@@ -2,7 +2,7 @@ import { getContext, setContext } from "svelte";
 import { persisted } from "svelte-persisted-store";
 import type { Action } from "svelte/action";
 import type { Writable } from "svelte/store";
-import type { BgColor, ElementType, Position } from "./type";
+import type { Position, SavedProject } from "./type";
 import { COLORS, clamp } from "./utils";
 
 export const drag: Action<
@@ -57,10 +57,6 @@ export const drag: Action<
 	};
 };
 
-type SavedProject = {
-	background: BgColor;
-	elements: ElementType[];
-};
 const lastProjectStoreContextKey = "lpsk";
 export function getLastProjectStore(): Writable<SavedProject> {
 	const store = getContext<Writable<SavedProject> | undefined>(lastProjectStoreContextKey);

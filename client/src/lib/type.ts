@@ -35,3 +35,7 @@ export type ElementTypeExtraProps = {
 		points: string[];
 	};
 };
+export type SavedProject = {
+	background: BgColor;
+	elements: ElementType[];
+};
