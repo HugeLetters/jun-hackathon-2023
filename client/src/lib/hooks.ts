@@ -1,45 +1,92 @@
+import { getContext, setContext } from "svelte";
+import { persisted } from "svelte-persisted-store";
 import type { Action } from "svelte/action";
-import type { Position } from "./type";
-import { clamp } from "./utils";
+import type { Writable } from "svelte/store";
+import type { Position, SavedProject } from "./type";
+import { COLORS, clamp } from "./utils";
+import type { FadeParams, TransitionConfig } from "svelte/transition";
 
 export const drag: Action<
 	HTMLElement,
 	{ currentPosition: Position; canvas: HTMLElement; updatePosition: (position: Position) => void }
-> = function (node, { currentPosition, canvas, updatePosition }) {
-	node.draggable = true;
+> = function (node, options) {
+	node.draggable = false;
 	let [startX, startY] = [0, 0];
 
-	function onDrag() {
-		node.style.opacity = "0";
+	let transform: string;
+	function onPointerMove(e: PointerEvent) {
+		node.style.transform = `translate(${e.clientX - startX}px, ${
+			e.clientY - startY
+		}px) ${transform}`;
 	}
-	function onDragStart(e: DragEvent) {
+	function onPointerDown(e: PointerEvent) {
+		transform = node.style.transform;
 		startX = e.clientX;
 		startY = e.clientY;
-		node.addEventListener("drag", onDrag, { once: true });
+		window.addEventListener("pointermove", onPointerMove);
+		window.addEventListener("pointerup", onPointerUp, { once: true });
 	}
 
-	function onDragEnd(e: DragEvent) {
-		node.style.opacity = "";
+	function onPointerUp(e: PointerEvent) {
+		node.style.transform = transform;
 
-		const [currentX, currentY] = currentPosition;
-		const { left, top, right, bottom } = canvas.getBoundingClientRect();
+		const [currentX, currentY] = options.currentPosition;
+		const { left, top, right, bottom } = options.canvas.getBoundingClientRect();
 		const { height, width } = node.getBoundingClientRect();
 
-		updatePosition([
-			clamp(0, currentX + e.clientX - startX, right - left - width),
-			clamp(0, currentY + e.clientY - startY, bottom - top - height),
+		options.updatePosition([
+			clamp(-0.9 * width, currentX + e.clientX - startX, right - left - 0.1 * width),
+			clamp(-0.9 * height, currentY + e.clientY - startY, bottom - top - 0.1 * height),
 		]);
+
+		window.removeEventListener("pointermove", onPointerMove);
 	}
-	node.addEventListener("dragstart", onDragStart);
-	node.addEventListener("dragend", onDragEnd);
+
+	node.addEventListener("pointerdown", onPointerDown);
 
 	return {
-		update({ currentPosition: updatedPosition }) {
-			currentPosition = updatedPosition;
+		update(updatedOptions) {
+			options = updatedOptions;
 		},
 		destroy() {
-			node.removeEventListener("dragstart", onDragStart);
-			node.removeEventListener("dragend", onDragEnd);
+			node.removeEventListener("pointerdown", onPointerDown);
+			window.removeEventListener("pointermove", onPointerMove);
+			window.removeEventListener("pointerup", onPointerUp);
 		},
+	};
+};
+
+const lastProjectStoreContextKey = "lpsk";
+export function getLastProjectStore(): Writable<SavedProject> {
+	const store = getContext<Writable<SavedProject> | undefined>(lastProjectStoreContextKey);
+	if (store) return store;
+
+	const newStore = persisted<SavedProject>("current-project", {
+		background: { ...COLORS.white },
+		elements: [],
+	});
+	setContext(lastProjectStoreContextKey, newStore);
+	return newStore;
+}
+
+export const turn = (
+	node: HTMLElement,
+	params?: FadeParams & { offsetOrigin?: number; rotateTo?: number },
+): TransitionConfig => {
+	const { delay, duration, easing, offsetOrigin = 0, rotateTo = 80 } = params ?? {};
+
+	const style = getComputedStyle(node);
+	const transform = style.transform;
+	const opacity = +style.opacity;
+
+	return {
+		css(t, u) {
+			return `transform: ${transform} rotateY(${
+				rotateTo * u
+			}deg); transform-origin: -${offsetOrigin}px; opacity: ${opacity * t};`;
+		},
+		delay,
+		duration,
+		easing,
 	};
 };

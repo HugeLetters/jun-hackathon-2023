@@ -1,46 +1,64 @@
 <script lang="ts">
 import Element from "$lib/components/Element.svelte";
+import ElementController from "$lib/components/ElementController.svelte";
+import TextElementController from "$lib/components/TextElementController.svelte";
+import Sidebar from "$lib/components/sidebar/Sidebar.svelte";
+import { getLastProjectStore } from "$lib/hooks";
 import type { ElementType } from "$lib/type";
+import { colorToString } from "$lib/utils";
 
-let bgColor = "";
-let bgGradient = "";
+export let data;
 
-let elementList: ElementType[] = [];
+const project = getLastProjectStore();
+
+let focusedElement: ElementType | null = null;
 let canvas: HTMLElement;
+
+function updateElementList() {
+	$project = $project;
+}
 </script>
 
-<div class="grid min-h-screen grid-cols-5">
-	<div class="flex flex-col bg-neutral-400 p-2">
-		UI
-		<input
-			bind:value={bgColor}
-			placeholder="bg color"
-		/>
-		<input
-			bind:value={bgGradient}
-			placeholder="bg gradient"
-		/>
-		<button
-			on:click={() => {
-				elementList.push({ position: [50, 50], type: "text" });
-				elementList = elementList;
-			}}
-		>
-			add element {elementList[0]?.position.join(", ")}
-		</button>
-	</div>
-	<div class="col-span-4 flex min-w-fit items-center justify-center">
-		<div
-			class="relative aspect-video h-[512px] overflow-hidden bg-[color:var(--bg-color)] bg-[image:var(--bg-gradient)]"
-			style="--bg-color: {bgColor || 'aqua'}; --bg-gradient: {bgGradient}"
-			bind:this={canvas}
-		>
-			{#each elementList as element}
-				<Element
-					bind:element
-					{canvas}
+<div class="flex min-h-screen">
+	<Sidebar
+		assets={data.assets}
+		{canvas}
+		bind:project={$project}
+	/>
+	<div class="flex grow flex-col items-center p-4">
+		<div>
+			header ui
+			{#if focusedElement}
+				<div>{focusedElement.position}</div>
+				<ElementController
+					bind:element={focusedElement}
+					update={updateElementList}
 				/>
-			{/each}
+				{#if focusedElement.type === "text"}
+					<TextElementController
+						bind:element={focusedElement}
+						update={updateElementList}
+					/>
+				{/if}
+			{/if}
+		</div>
+		<div class="my-auto flex min-w-fit items-center justify-center bg-white">
+			<div
+				class="relative z-0 aspect-video w-[1400px] overflow-hidden"
+				style="background: {colorToString($project.background)};"
+				bind:this={canvas}
+			>
+				{#each $project.elements as element}
+					<Element
+						deleteElement={() => {
+							$project.elements = $project.elements.filter((x) => x !== element);
+						}}
+						bind:focusedElement
+						bind:element
+						{canvas}
+					/>
+				{/each}
+			</div>
 		</div>
 	</div>
 </div>
