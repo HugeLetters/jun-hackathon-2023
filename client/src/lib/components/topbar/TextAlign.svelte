@@ -1,9 +1,9 @@
 <script lang="ts">
-import type { ElementTypeExtra } from "$lib/type";
-import { includes } from "$lib/utils";
+import TextCenter from "$lib/components/icons/TextCenter.svelte";
 import TextLeft from "$lib/components/icons/TextLeft.svelte";
 import TextRight from "$lib/components/icons/TextRight.svelte";
-import TextCenter from "$lib/components/icons/TextCenter.svelte";
+import type { ElementTypeExtra } from "$lib/type";
+import { includes } from "$lib/utils";
 
 import { createRadioGroup, melt } from "@melt-ui/svelte";
 

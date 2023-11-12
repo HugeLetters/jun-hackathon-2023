@@ -1,16 +1,16 @@
 <script lang="ts">
+import Bold from "$lib/components/icons/Bold.svelte";
+import Italic from "$lib/components/icons/Italic.svelte";
 import Minus from "$lib/components/icons/Minus.svelte";
 import Paint from "$lib/components/icons/Paint.svelte";
 import Plus from "$lib/components/icons/Plus.svelte";
-import Bold from "$lib/components/icons/Bold.svelte";
-import Italic from "$lib/components/icons/Italic.svelte";
 import Underline from "$lib/components/icons/Underline.svelte";
 import type { ElementType } from "$lib/type";
 import { createPopover, melt } from "@melt-ui/svelte";
 import { fade } from "svelte/transition";
-import TextColorController from "./TextColorController.svelte";
-import TextCheckbox from "./TextCheckbox.svelte";
 import TextAlign from "./TextAlign.svelte";
+import TextCheckbox from "./TextCheckbox.svelte";
+import TextColorController from "./TextColorController.svelte";
 
 export let element: ElementType<"text">;
 

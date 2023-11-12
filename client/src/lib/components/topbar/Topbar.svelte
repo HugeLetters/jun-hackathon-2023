@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { ElementType } from "$lib/type";
 import ElementController from "./ElementController.svelte";
+import ShapeElementController from "./ShapeElementController.svelte";
 import TextElementController from "./TextElementController.svelte";
 
 export let focusedElement: ElementType | null;
@@ -20,9 +21,7 @@ $: if (focusedElement) {
 }
 </script>
 
-<div
-	class="w-canvas flex items-center gap-2 self-stretch overflow-x-auto bg-white p-2 text-zinc-800"
->
+<div class="flex w-full items-center gap-2 self-stretch overflow-x-auto bg-white p-6 text-zinc-800">
 	{#if focusedElement}
 		<ElementController
 			bind:element={focusedElement}
@@ -31,10 +30,8 @@ $: if (focusedElement) {
 		/>
 		{#if focusedElement.type === "text"}
 			<TextElementController bind:element={focusedElement} />
-		{:else if focusedElement.type === "image"}
-			1
 		{:else if focusedElement.type === "shape"}
-			2
+			<ShapeElementController bind:element={focusedElement} />
 		{/if}
 	{/if}
 </div>

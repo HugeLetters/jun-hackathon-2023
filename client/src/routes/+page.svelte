@@ -3,21 +3,32 @@ import Element from "$lib/components/Element.svelte";
 import Sidebar from "$lib/components/sidebar/Sidebar.svelte";
 import Topbar from "$lib/components/topbar/Topbar.svelte";
 import { getLastProjectStore } from "$lib/hooks";
-import type { ElementType } from "$lib/type";
+import type { CreateElementFn, ElementType, Position } from "$lib/type";
 import { colorToString } from "$lib/utils";
 
 export let data;
 
-const project = getLastProjectStore();
-
-function createElement(element: ElementType) {
-	$project.elements.push(element);
-	$project.elements = $project.elements;
-	focusedElement = focusedElement;
-}
-
 let focusedElement: ElementType | null = null;
 let canvas: HTMLElement;
+$: canvasCenter = ((): Position => {
+	if (!canvas) return [0, 0];
+
+	const { width, height } = canvas.getBoundingClientRect();
+
+	return [width / 2, height / 2];
+})();
+
+const project = getLastProjectStore();
+
+const createElement: CreateElementFn = (element) => {
+	$project.elements.push({
+		...element,
+		position: [canvasCenter[0] - 50, canvasCenter[1] - 50],
+		size: [100, 100],
+	});
+	$project.elements = $project.elements;
+	focusedElement = focusedElement;
+};
 </script>
 
 <div class="flex min-h-screen">
@@ -27,14 +38,14 @@ let canvas: HTMLElement;
 		bind:project={$project}
 		{createElement}
 	/>
-	<div class="flex grow flex-col items-center p-4">
+	<div class="flex grow flex-col items-center">
 		<Topbar
 			bind:elementList={$project.elements}
 			bind:focusedElement
 		/>
 		<div class="my-auto flex min-w-fit items-center justify-center bg-white">
 			<div
-				class="w-canvas relative z-0 aspect-video overflow-hidden"
+				class="w-canvas drop-shadow-around relative z-0 aspect-video overflow-hidden rounded-lg"
 				style="background: {colorToString($project.background)};"
 				bind:this={canvas}
 			>

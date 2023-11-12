@@ -36,3 +36,6 @@ export type SavedProject = {
 	background: BgColor;
 	elements: ElementType[];
 };
+
+type DistributiveOmit<O, K extends keyof O> = O extends O ? Omit<O, K> : never;
+export type CreateElementFn = (element: DistributiveOmit<ElementType, "position" | "size">) => void;
