@@ -19,20 +19,17 @@ export type ElementType<TKind extends ElementKind = ElementKind> = TKind extends
 export type ElementTypeExtra = {
 	text: {
 		content: string;
-		href?: string;
-		color: string;
-		weight: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
+		color: HslColor;
+		bold?: boolean;
 		italic?: boolean;
 		fontSize: number;
 		align?: "left" | "center" | "right";
 		underline?: boolean;
-		font: string;
 	};
 	image: { src: string };
-	shape: { subtype: "circle" | "triangle" | "square"; color: BgColor };
-	line: {
-		color: string;
-		points: string[];
+	shape: {
+		subtype: "circle" | "triangle" | "square";
+		color: BgColor;
 	};
 };
 export type SavedProject = {

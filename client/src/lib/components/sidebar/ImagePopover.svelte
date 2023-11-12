@@ -75,7 +75,7 @@ onMount(() => {
 }
 ::-webkit-scrollbar {
 	background-color: theme("colors.black/20");
-	border-radius: theme("borderRadius.md");
+	border-radius: theme("borderRadius.full");
 	width: theme("width.2");
 }
 </style>

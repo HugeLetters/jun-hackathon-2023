@@ -30,10 +30,8 @@ $: canvasCenter = ((): Position => {
 			createElement({
 				position: canvasCenter,
 				type: "text",
-				color: "black",
-				font: "Roboto",
+				color: COLORS.black,
 				content: "text",
-				weight: 400,
 				fontSize: 1,
 				size: [100, 100],
 			});

@@ -34,7 +34,7 @@ let canvas: HTMLElement;
 		/>
 		<div class="my-auto flex min-w-fit items-center justify-center bg-white">
 			<div
-				class="relative z-0 aspect-video w-[950px] overflow-hidden"
+				class="w-canvas relative z-0 aspect-video overflow-hidden"
 				style="background: {colorToString($project.background)};"
 				bind:this={canvas}
 			>
