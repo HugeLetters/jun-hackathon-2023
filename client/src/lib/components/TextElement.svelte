@@ -12,7 +12,7 @@ onMount(() => {
 <textarea
 	bind:this={root}
 	bind:value={element.content}
-	class="h-full w-full resize-none overflow-hidden bg-transparent outline-none"
+	class="h-full w-full cursor-[inherit] resize-none overflow-hidden bg-transparent outline-none group-focus-within:cursor-text"
 	class:italic={element.italic}
 	class:underline={element.underline}
 	style="text-align: {element.align ?? 'center'}; font-family: {element.font}; 

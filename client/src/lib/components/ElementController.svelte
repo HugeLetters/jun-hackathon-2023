@@ -3,6 +3,8 @@ import type { ElementType } from "$lib/type";
 
 export let element: ElementType;
 export let update: () => void;
+export let moveLayerUp: () => void;
+export let moveLayerDown: () => void;
 </script>
 
 <input
@@ -20,3 +22,5 @@ export let update: () => void;
 	on:input={update}
 	placeholder="opacity"
 />
+<button on:click={moveLayerUp}>move layer up</button>
+<button on:click={moveLayerDown}>move layer down</button>

@@ -37,7 +37,7 @@ const {
 		transition:turn={{ duration: 150, offsetOrigin: 15, rotateTo: 50 }}
 		class="grid w-48 translate-x-5 grid-cols-3 gap-4 rounded-lg bg-neutral-900 p-4"
 	>
-		{#each shapes as shape}
+		{#each shapes as shape (shape)}
 			<button
 				on:click={() => {
 					elements.push({

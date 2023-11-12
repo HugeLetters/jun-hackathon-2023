@@ -35,7 +35,7 @@ const {
 	>
 		<span class="block py-4">Цвета фона</span>
 		<div class="grid grid-cols-4 gap-3">
-			{#each colors as color}
+			{#each colors as color (color)}
 				<button
 					class="aspect-square w-20 rounded-md"
 					style="background: {colorToString(color)};"

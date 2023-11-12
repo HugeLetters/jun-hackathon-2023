@@ -31,7 +31,7 @@ onMount(() => {
 	}}
 	data-type={element.type}
 	data-href={element.type === "text" ? element.href : undefined}
-	class="absolute max-h-full max-w-full rounded-sm outline-2 outline-offset-8 outline-black/20 focus-within:outline"
+	class="group absolute max-h-full max-w-full rounded-sm outline-dashed outline-0 outline-offset-8 outline-black/40 focus-within:focus-within:outline-2 hover:outline-1"
 	style="left: {element.position[0]}px; top: {element.position[1]}px;
 	width: {element.size[0]}px; height: {element.size[1]}px; opacity: {element.opacity ?? 1};"
 	use:drag={{
