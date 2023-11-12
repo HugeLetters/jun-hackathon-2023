@@ -4,12 +4,14 @@ import { onMount } from "svelte";
 
 export let element: ElementTypeExtra["text"];
 let root: HTMLTextAreaElement;
+
 onMount(() => {
 	root.select();
 });
 </script>
 
 <textarea
+	on:focus={() => root.select()}
 	bind:this={root}
 	bind:value={element.content}
 	class="h-full w-full cursor-[inherit] resize-none overflow-hidden bg-transparent outline-none group-focus-within:cursor-text"
