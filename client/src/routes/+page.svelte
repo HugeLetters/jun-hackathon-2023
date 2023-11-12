@@ -61,5 +61,6 @@ const createElement: CreateElementFn = (element) => {
 				{/each}
 			</div>
 		</div>
+		<div class="text-zinc-800">Press Delete on focused element to remove it from canvas</div>
 	</div>
 </div>
