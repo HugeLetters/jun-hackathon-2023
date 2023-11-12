@@ -1,8 +1,8 @@
 <script lang="ts">
-import type { ElementType } from "$lib/type";
+import type { ElementTypeExtra } from "$lib/type";
 import { colorToString } from "$lib/utils";
 
-export let element: ElementType<"shape">;
+export let element: ElementTypeExtra["shape"];
 
 $: bgColor = colorToString(element.color);
 </script>
@@ -10,12 +10,12 @@ $: bgColor = colorToString(element.color);
 {#if element.subtype === "circle"}
 	<div
 		class="h-full w-full rounded-full"
-		style="background-color: {bgColor};"
+		style="background: {bgColor};"
 	/>
 {:else if element.subtype === "square"}
 	<div
 		class="h-full w-full"
-		style="background-color: {bgColor};"
+		style="background: {bgColor};"
 	/>
 {:else if element.subtype === "triangle"}
 	<div

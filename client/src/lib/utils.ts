@@ -1,4 +1,4 @@
-import type { BgColor, HslColor } from "./type";
+import type { BgColor } from "./type";
 
 export function clamp(min: number, value: number, max: number) {
 	return Math.max(min, Math.min(value, max));
@@ -31,4 +31,19 @@ export const COLORS = {
 	blue: { type: "hsl", color: 200, lightness: 60, saturation: 100 },
 	darkblue: { type: "hsl", color: 230, lightness: 50, saturation: 100 },
 	purple: { type: "hsl", color: 280, lightness: 20, saturation: 100 },
-} as const satisfies Record<string, HslColor>;
+	orangeRed: { type: "gradient", degree: 0, colors: [0, 30] },
+	orangeYellow: { type: "gradient", degree: 60, colors: [30, 60] },
+	yellowGreen: { type: "gradient", degree: 120, colors: [60, 120] },
+	greenCyan: { type: "gradient", degree: 180, colors: [120, 180] },
+	magentaBlue: { type: "gradient", degree: 240, colors: [240, 300] },
+	magentaViolet: { type: "gradient", degree: 300, colors: [250, 330] },
+} as const satisfies Record<string, BgColor>;
+
+export function randomArrayElement<T>(arr: T[]) {
+	return arr[Math.floor(Math.random() * arr.length)]!;
+}
+
+export function randomRecordEntry<T>(record: Record<string, T>) {
+	console.log(randomArrayElement(Object.values(record)));
+	return randomArrayElement(Object.values(record));
+}

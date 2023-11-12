@@ -4,6 +4,7 @@ import type { Action } from "svelte/action";
 import type { Writable } from "svelte/store";
 import type { Position, SavedProject } from "./type";
 import { COLORS, clamp } from "./utils";
+import type { FadeParams, TransitionConfig } from "svelte/transition";
 
 export const drag: Action<
 	HTMLElement,
@@ -67,3 +68,25 @@ export function getLastProjectStore(): Writable<SavedProject> {
 	setContext(lastProjectStoreContextKey, newStore);
 	return newStore;
 }
+
+export const turn = (
+	node: HTMLElement,
+	params?: FadeParams & { offsetOrigin?: number; rotateTo?: number },
+): TransitionConfig => {
+	const { delay, duration, easing, offsetOrigin = 0, rotateTo = 80 } = params ?? {};
+
+	const style = getComputedStyle(node);
+	const transform = style.transform;
+	const opacity = +style.opacity;
+
+	return {
+		css(t, u) {
+			return `transform: ${transform} rotateY(${
+				rotateTo * u
+			}deg); transform-origin: -${offsetOrigin}px; opacity: ${opacity * t};`;
+		},
+		delay,
+		duration,
+		easing,
+	};
+};

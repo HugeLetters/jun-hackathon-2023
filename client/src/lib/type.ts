@@ -1,10 +1,10 @@
-export type ElementKind = keyof ElementTypeExtraProps;
+export type ElementKind = keyof ElementTypeExtra;
 export type Position = [x: number, y: number];
 export type Size = [w: number, h: number];
 export type GradientColor = {
 	type: "gradient";
 	degree: number;
-	colors: [number, number, ...number[]];
+	colors: readonly [number, number, ...number[]];
 };
 export type HslColor = { type: "hsl"; color: number; saturation: number; lightness: number };
 export type BgColor = (GradientColor | HslColor) & { opacity?: number };
@@ -14,9 +14,9 @@ export type ElementType<TKind extends ElementKind = ElementKind> = TKind extends
 			position: Position;
 			size: Size;
 			opacity?: number;
-	  } & ElementTypeExtraProps[TKind]
+	  } & ElementTypeExtra[TKind]
 	: never;
-export type ElementTypeExtraProps = {
+export type ElementTypeExtra = {
 	text: {
 		content: string;
 		href?: string;

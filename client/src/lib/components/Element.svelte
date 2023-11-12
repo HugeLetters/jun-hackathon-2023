@@ -1,6 +1,7 @@
 <script lang="ts">
 import { drag } from "$lib/hooks";
 import type { ElementType } from "$lib/type";
+import { onMount } from "svelte";
 import ImageElement from "./ImageElement.svelte";
 import ShapeElement from "./ShapeElement.svelte";
 import TextElement from "./TextElement.svelte";
@@ -9,9 +10,17 @@ export let element: ElementType;
 export let canvas: HTMLElement;
 export let focusedElement: ElementType | null;
 export let deleteElement: () => void;
+
+let root: HTMLElement;
+onMount(async () => {
+	if (!canvas || canvas.contains(document.activeElement)) return;
+
+	root.focus();
+});
 </script>
 
 <button
+	bind:this={root}
 	on:focus|capture={() => {
 		focusedElement = element;
 	}}
@@ -22,7 +31,7 @@ export let deleteElement: () => void;
 	}}
 	data-type={element.type}
 	data-href={element.type === "text" ? element.href : undefined}
-	class="absolute max-h-full max-w-full rounded-sm outline-offset-8 outline-black/20 focus-within:outline"
+	class="absolute max-h-full max-w-full rounded-sm outline-2 outline-offset-8 outline-black/20 focus-within:outline"
 	class:italic={element.type === "text" && element.italic}
 	class:underline={element.type === "text" && element.underline}
 	style="left: {element.position[0]}px; top: {element.position[1]}px;

@@ -1,7 +1,7 @@
 <script lang="ts">
-import type { ElementType } from "$lib/type";
+import type { ElementTypeExtra } from "$lib/type";
 
-export let element: ElementType<"image">;
+export let element: ElementTypeExtra["image"];
 </script>
 
 <img
