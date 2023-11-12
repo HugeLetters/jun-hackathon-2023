@@ -11,6 +11,7 @@ onMount(() => {
 </script>
 
 <textarea
+	on:dragstart|preventDefault
 	on:focus={() => root.select()}
 	bind:this={root}
 	bind:value={element.content}

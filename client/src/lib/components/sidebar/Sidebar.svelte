@@ -1,16 +1,17 @@
 <script lang="ts">
-import Tt from "$lib/components/icons/Tt.svelte";
 import Eraser from "$lib/components/icons/Eraser.svelte";
-import type { Position, SavedProject } from "$lib/type";
+import Tt from "$lib/components/icons/Tt.svelte";
+import type { ElementType, Position, SavedProject } from "$lib/type";
 import { COLORS } from "$lib/utils";
 import BackgroundController from "./BackgroundController.svelte";
-import ShapePopover from "./ShapePopover.svelte";
 import ExportPopover from "./ExportPopover.svelte";
 import ImagePopover from "./ImagePopover.svelte";
+import ShapePopover from "./ShapePopover.svelte";
 
 export let project: SavedProject;
 export let canvas: HTMLElement;
 export let assets: string[];
+export let createElement: (element: ElementType) => void;
 
 $: canvasCenter = ((): Position => {
 	if (!canvas) return [0, 0];
@@ -21,12 +22,12 @@ $: canvasCenter = ((): Position => {
 })();
 </script>
 
-<div class="flex w-28 flex-col bg-neutral-900 p-4 pt-20">
+<div class="flex w-28 flex-col justify-center gap-8 bg-neutral-900 p-4">
 	<BackgroundController bind:background={project.background} />
 	<button
 		class="group w-full text-zinc-200"
 		on:click={() => {
-			project.elements.push({
+			createElement({
 				position: canvasCenter,
 				type: "text",
 				color: "black",
@@ -36,7 +37,6 @@ $: canvasCenter = ((): Position => {
 				fontSize: 1,
 				size: [100, 100],
 			});
-			project.elements = project.elements;
 		}}
 	>
 		<div class="w-full rounded-full px-4 py-2 transition-colors group-focus-within:bg-zinc-600">
@@ -45,19 +45,21 @@ $: canvasCenter = ((): Position => {
 		<span class="whitespace-nowrap text-xs font-semibold">Текст</span>
 	</button>
 	<ShapePopover
-		bind:elements={project.elements}
+		{createElement}
 		{canvasCenter}
 	/>
 	<ImagePopover
-		bind:elements={project.elements}
+		{createElement}
 		{canvasCenter}
 		{assets}
 	/>
 	<button
 		class="group w-full text-zinc-200"
 		on:click={() => {
-			project.elements = [];
-			project.background = { ...COLORS.white };
+			project = {
+				elements: [],
+				background: { ...COLORS.white },
+			};
 		}}
 	>
 		<div class="w-full rounded-full px-4 py-2 transition-colors group-focus-within:bg-zinc-600">

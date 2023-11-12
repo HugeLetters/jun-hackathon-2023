@@ -11,6 +11,10 @@ export const drag: Action<
 	{ currentPosition: Position; canvas: HTMLElement; updatePosition: (position: Position) => void }
 > = function (node, options) {
 	node.draggable = false;
+	node.querySelectorAll("*").forEach((element) => {
+		if (!(element instanceof HTMLElement)) return;
+		element.draggable = false;
+	});
 	let [startX, startY] = [0, 0];
 
 	let transform: string;

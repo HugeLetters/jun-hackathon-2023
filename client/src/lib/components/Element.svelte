@@ -1,7 +1,7 @@
 <script lang="ts">
 import { drag } from "$lib/hooks";
 import type { ElementType } from "$lib/type";
-import { onMount } from "svelte";
+import { onMount, tick } from "svelte";
 import ImageElement from "./ImageElement.svelte";
 import ShapeElement from "./ShapeElement.svelte";
 import TextElement from "./TextElement.svelte";
@@ -21,7 +21,8 @@ onMount(() => {
 
 <button
 	bind:this={root}
-	on:focus|capture={() => {
+	on:focus|capture={async () => {
+		await tick();
 		focusedElement = element;
 	}}
 	on:keydown={(e) => {

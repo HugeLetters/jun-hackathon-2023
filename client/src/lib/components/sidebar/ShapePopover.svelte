@@ -1,13 +1,13 @@
 <script lang="ts">
 import Shape from "$lib/components/icons/Shape.svelte";
 import { turn } from "$lib/hooks";
-import type { ElementTypeExtra, Position, SavedProject } from "$lib/type";
+import type { ElementType, ElementTypeExtra, Position } from "$lib/type";
 import { COLORS, randomRecordEntry } from "$lib/utils";
 import { createPopover, melt } from "@melt-ui/svelte";
 import ShapeElement from "../ShapeElement.svelte";
 
-export let elements: SavedProject["elements"];
 export let canvasCenter: Position;
+export let createElement: (element: ElementType<"shape">) => void;
 
 const shapes: Array<ElementTypeExtra["shape"]["subtype"]> = ["circle", "square", "triangle"];
 
@@ -40,14 +40,13 @@ const {
 		{#each shapes as shape (shape)}
 			<button
 				on:click={() => {
-					elements.push({
+					createElement({
 						type: "shape",
 						subtype: shape,
 						position: canvasCenter,
 						color: { ...COLORS.black },
 						size: [100, 100],
 					});
-					elements = elements;
 					$open = false;
 				}}
 				class="aspect-square basis-1/3"

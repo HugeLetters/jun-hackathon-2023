@@ -1,13 +1,13 @@
 <script lang="ts">
 import ImageIcon from "$lib/components/icons/Image.svelte";
 import { turn } from "$lib/hooks";
-import type { Position, SavedProject } from "$lib/type";
+import type { ElementType, Position } from "$lib/type";
 import { createPopover, melt } from "@melt-ui/svelte";
 import { onMount } from "svelte";
 
 export let assets: string[];
-export let elements: SavedProject["elements"];
 export let canvasCenter: Position;
+export let createElement: (element: ElementType<"image">) => void;
 
 const {
 	elements: { trigger, content },
@@ -46,13 +46,12 @@ onMount(() => {
 		{#each assets as asset (asset)}
 			<button
 				on:click={() => {
-					elements.push({
+					createElement({
 						type: "image",
 						src: asset,
 						position: canvasCenter,
 						size: [100, 100],
 					});
-					elements = elements;
 					$open = false;
 				}}
 				class="aspect-square basis-1/2 overflow-hidden rounded-lg bg-white/10"
