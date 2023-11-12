@@ -1,12 +1,12 @@
 <script lang="ts">
 import PaletteIcon from "$lib/components/icons/Palette.svelte";
-import type { Background, BgColor } from "$lib/type";
+import type { BgColor } from "$lib/type";
 import { COLORS, colorToString } from "$lib/utils";
 import { createPopover, melt } from "@melt-ui/svelte";
 import { fade } from "svelte/transition";
 import BackgroundColorController from "./BackgroundColorController.svelte";
 
-export let background: Background;
+export let background: BgColor;
 const colors: BgColor[] = [
 	COLORS.white,
 	COLORS.black,
@@ -17,7 +17,12 @@ const colors: BgColor[] = [
 	COLORS.blue,
 	COLORS.darkblue,
 	COLORS.purple,
-	{ type: "gradient", degree: 35, colors: [200, 100] },
+	{ type: "gradient", degree: 0, colors: [0, 30] },
+	{ type: "gradient", degree: 60, colors: [30, 60] },
+	{ type: "gradient", degree: 120, colors: [60, 120] },
+	{ type: "gradient", degree: 180, colors: [120, 180] },
+	{ type: "gradient", degree: 240, colors: [240, 300] },
+	{ type: "gradient", degree: 300, colors: [250, 330] },
 ];
 
 const {
@@ -51,27 +56,32 @@ const {
 					class="aspect-square w-20 rounded-md"
 					style="background: {colorToString(color)};"
 					on:click={() => {
-						background.color = { ...color };
+						background = { ...color };
 					}}
 				/>
 			{/each}
 		</div>
 		<div class="">
 			<BackgroundColorController
-				bind:color={background.color}
+				bind:color={background}
 				property="color"
 				label="Оттенок"
 			/>
 
 			<BackgroundColorController
-				bind:color={background.color}
+				bind:color={background}
 				property="saturation"
 				label="Насыщенность"
 			/>
 			<BackgroundColorController
-				bind:color={background.color}
+				bind:color={background}
 				property="lightness"
 				label="Яркость"
+			/>
+			<BackgroundColorController
+				bind:color={background}
+				property="opacity"
+				label="Прозрачность"
 			/>
 		</div>
 	</div>

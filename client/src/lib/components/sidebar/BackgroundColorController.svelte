@@ -1,22 +1,25 @@
 <script lang="ts">
-import type { BgColor, HslColor } from "$lib/type";
+import type { BgColor } from "$lib/type";
 import { COLORS } from "$lib/utils";
 import { createSlider, melt } from "@melt-ui/svelte";
 
 export let color: BgColor;
-export let property: Exclude<keyof HslColor, "type">;
+export let property: Exclude<keyof Extract<BgColor, { type: "hsl" }>, "type">;
 export let label: string;
 
 const {
 	elements: { range, root, thumb },
 	states: { value: rangeValue },
 } = createSlider({
-	defaultValue: [color.type === "hsl" ? color[property] : 0],
+	defaultValue: [
+		color.type === "hsl" ? color[property] ?? 0 : property === "opacity" ? color[property] ?? 0 : 0,
+	],
 	onValueChange({ next }) {
 		const [value] = next;
 		if (value === undefined) return next;
 
-		if (color.type === "hsl") color[property] = value;
+		if (property === "opacity") color[property] = value;
+		else if (color.type === "hsl") color[property] = value;
 		else color = { ...COLORS.white, [property]: value };
 
 		return next;
@@ -24,8 +27,8 @@ const {
 	min: 0,
 	max: property === "color" ? 360 : 100,
 });
-$: if (color.type === "hsl") {
-	$rangeValue = [color[property]];
+$: if (color.type === "hsl" && $rangeValue[0] !== color[property]) {
+	$rangeValue = [color[property] ?? 0];
 }
 </script>
 

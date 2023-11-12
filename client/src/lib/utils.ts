@@ -8,10 +8,12 @@ export function colorToString(color: BgColor) {
 	switch (color.type) {
 		case "gradient":
 			return `linear-gradient(${color.degree}deg, ${color.colors
-				.map((color) => `hsl(${color} 100% 50%)`)
+				.map((hue) => `hsla(${hue} 100% 50%  / ${100 - (color.opacity ?? 0)}%)`)
 				.join(", ")})`;
 		case "hsl":
-			return `hsl(${color.color} ${color.saturation}% ${color.lightness}%)`;
+			return `hsl(${color.color} ${color.saturation}% ${color.lightness}% / ${
+				100 - (color.opacity ?? 0)
+			}%)`;
 		default: {
 			const x: never = color;
 			return x;

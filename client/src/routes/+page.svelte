@@ -95,7 +95,7 @@ function updateElementList() {
 		<button
 			on:click={() => {
 				$project.elements = [];
-				$project.background = { color: COLORS.white };
+				$project.background = { ...COLORS.white };
 			}}
 		>
 			clear
@@ -139,10 +139,10 @@ function updateElementList() {
 				{/if}
 			{/if}
 		</div>
-		<div class="my-auto flex min-w-fit items-center justify-center">
+		<div class="my-auto flex min-w-fit items-center justify-center bg-white">
 			<div
 				class="relative z-0 aspect-video w-[1400px] overflow-hidden"
-				style="background: {colorToString($project.background.color) ?? 'white'}"
+				style="background: {colorToString($project.background)};"
 				bind:this={canvas}
 			>
 				{#each $project.elements as element}

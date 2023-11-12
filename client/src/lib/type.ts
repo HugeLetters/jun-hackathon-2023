@@ -7,7 +7,7 @@ export type GradientColor = {
 	colors: [number, number, ...number[]];
 };
 export type HslColor = { type: "hsl"; color: number; saturation: number; lightness: number };
-export type BgColor = GradientColor | HslColor;
+export type BgColor = (GradientColor | HslColor) & { opacity?: number };
 export type ElementType<TKind extends ElementKind = ElementKind> = TKind extends TKind
 	? {
 			type: TKind;
@@ -34,8 +34,4 @@ export type ElementTypeExtraProps = {
 		color: string;
 		points: string[];
 	};
-};
-export type Background = {
-	color: BgColor;
-	opacity?: number;
 };
