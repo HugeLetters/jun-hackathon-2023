@@ -37,6 +37,7 @@ const createElement: CreateElementFn = (element) => {
 		{canvas}
 		bind:project={$project}
 		{createElement}
+		bind:focusedElement
 	/>
 	<div class="flex grow flex-col items-center">
 		<Topbar

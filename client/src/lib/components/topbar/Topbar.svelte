@@ -21,7 +21,9 @@ $: if (focusedElement) {
 }
 </script>
 
-<div class="flex w-full items-center gap-2 self-stretch overflow-x-auto bg-white p-6 text-zinc-800">
+<div
+	class="flex h-20 w-full items-center gap-2 self-stretch overflow-x-auto bg-white p-6 text-zinc-800"
+>
 	{#if focusedElement}
 		<ElementController
 			bind:element={focusedElement}

@@ -1,7 +1,7 @@
 <script lang="ts">
 import Eraser from "$lib/components/icons/Eraser.svelte";
 import Tt from "$lib/components/icons/Tt.svelte";
-import type { CreateElementFn, SavedProject } from "$lib/type";
+import type { CreateElementFn, ElementType, SavedProject } from "$lib/type";
 import { COLORS } from "$lib/utils";
 import BackgroundController from "./BackgroundController.svelte";
 import ExportPopover from "./ExportPopover.svelte";
@@ -9,12 +9,18 @@ import ImagePopover from "./ImagePopover.svelte";
 import ShapePopover from "./ShapePopover.svelte";
 
 export let project: SavedProject;
+export let focusedElement: ElementType | null;
 export let canvas: HTMLElement;
 export let assets: string[];
 export let createElement: CreateElementFn;
 </script>
 
-<div class="flex w-28 flex-col justify-center gap-8 bg-neutral-900 p-4">
+<div
+	class="flex w-28 flex-col justify-center gap-8 bg-neutral-900 p-4"
+	on:focus|capture={() => {
+		focusedElement = null;
+	}}
+>
 	<BackgroundController bind:background={project.background} />
 	<button
 		class="group w-full text-zinc-200"
