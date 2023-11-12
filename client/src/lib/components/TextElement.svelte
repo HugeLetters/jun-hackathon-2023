@@ -4,7 +4,7 @@ import { onMount } from "svelte";
 
 export let element: ElementTypeExtra["text"];
 let root: HTMLTextAreaElement;
-onMount(async () => {
+onMount(() => {
 	root.select();
 });
 </script>
@@ -13,5 +13,8 @@ onMount(async () => {
 	bind:this={root}
 	bind:value={element.content}
 	class="h-full w-full resize-none overflow-hidden bg-transparent outline-none"
-	style="text-align: {element.align ?? 'center'};"
+	class:italic={element.italic}
+	class:underline={element.underline}
+	style="text-align: {element.align ?? 'center'}; font-family: {element.font}; 
+		color: {element.color}; font-size: {element.fontSize}rem; font-weight: {element.weight};"
 />

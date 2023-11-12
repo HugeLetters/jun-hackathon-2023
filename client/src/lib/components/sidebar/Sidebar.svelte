@@ -12,13 +12,13 @@ export let project: SavedProject;
 export let canvas: HTMLElement;
 export let assets: string[];
 
-function getCanvasCenter(): Position {
+$: canvasCenter = ((): Position => {
 	if (!canvas) return [0, 0];
 
 	const { width, height } = canvas.getBoundingClientRect();
 
 	return [width / 2, height / 2];
-}
+})();
 </script>
 
 <div class="flex w-28 flex-col bg-neutral-900 p-4 pt-20">
@@ -27,10 +27,10 @@ function getCanvasCenter(): Position {
 		class="group w-full text-zinc-200"
 		on:click={() => {
 			project.elements.push({
-				position: getCanvasCenter(),
+				position: canvasCenter,
 				type: "text",
 				color: "black",
-				font: "ui-serif",
+				font: "Roboto",
 				content: "text",
 				weight: 400,
 				fontSize: 1,
@@ -46,11 +46,11 @@ function getCanvasCenter(): Position {
 	</button>
 	<ShapePopover
 		bind:elements={project.elements}
-		canvasCenter={getCanvasCenter()}
+		{canvasCenter}
 	/>
 	<ImagePopover
 		bind:elements={project.elements}
-		canvasCenter={getCanvasCenter()}
+		{canvasCenter}
 		{assets}
 	/>
 	<button

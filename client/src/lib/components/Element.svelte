@@ -12,7 +12,7 @@ export let focusedElement: ElementType | null;
 export let deleteElement: () => void;
 
 let root: HTMLElement;
-onMount(async () => {
+onMount(() => {
 	if (!canvas || canvas.contains(document.activeElement)) return;
 
 	root.focus();
@@ -32,13 +32,8 @@ onMount(async () => {
 	data-type={element.type}
 	data-href={element.type === "text" ? element.href : undefined}
 	class="absolute max-h-full max-w-full rounded-sm outline-2 outline-offset-8 outline-black/20 focus-within:outline"
-	class:italic={element.type === "text" && element.italic}
-	class:underline={element.type === "text" && element.underline}
 	style="left: {element.position[0]}px; top: {element.position[1]}px;
-	width: {element.size[0]}px; height: {element.size[1]}px; opacity: {element.opacity ?? 1};
-	{element.type === 'text'
-		? `font-family: ${element.font}; color: ${element.color}; font-size: ${element.fontSize}rem; font-weight: ${element.weight}`
-		: ''}"
+	width: {element.size[0]}px; height: {element.size[1]}px; opacity: {element.opacity ?? 1};"
 	use:drag={{
 		canvas,
 		currentPosition: element.position,

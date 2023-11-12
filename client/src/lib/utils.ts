@@ -44,6 +44,5 @@ export function randomArrayElement<T>(arr: T[]) {
 }
 
 export function randomRecordEntry<T>(record: Record<string, T>) {
-	console.log(randomArrayElement(Object.values(record)));
 	return randomArrayElement(Object.values(record));
 }
