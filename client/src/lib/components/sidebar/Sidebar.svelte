@@ -1,5 +1,6 @@
 <script lang="ts">
-import type { SavedProject } from "$lib/type";
+import Tt from "$lib/components/icons/Tt.svelte";
+import type { Position, SavedProject } from "$lib/type";
 import { COLORS } from "$lib/utils";
 import { toJpeg, toPng } from "html-to-image";
 import { jsPDF } from "jspdf";
@@ -8,6 +9,12 @@ import BackgroundController from "./BackgroundController.svelte";
 export let project: SavedProject;
 export let canvas: HTMLElement;
 export let assets: string[];
+
+function getCanvasCenter(): Position {
+	const { width, height } = canvas.getBoundingClientRect();
+
+	return [width / 2, height / 2];
+}
 
 type SupportedImage = "jpg" | "png";
 function getConverter(type: SupportedImage) {
@@ -35,11 +42,10 @@ function downloadImage(type: SupportedImage) {
 <div class="flex w-28 flex-col bg-neutral-900 p-5">
 	<BackgroundController bind:background={project.background} />
 	<button
+		class="w-full text-zinc-200"
 		on:click={() => {
-			const { width, height } = canvas.getBoundingClientRect();
-
 			project.elements.push({
-				position: [width / 2, height / 2],
+				position: getCanvasCenter(),
 				type: "text",
 				color: "black",
 				font: "ui-serif",
@@ -51,14 +57,17 @@ function downloadImage(type: SupportedImage) {
 			project.elements = project.elements;
 		}}
 	>
-		add text element
+		<div class="w-full rounded-full bg-zinc-600 px-4 py-2">
+			<Tt class="mx-auto h-5 w-5" />
+		</div>
+		<span class="whitespace-nowrap text-xs font-semibold">Текст</span>
 	</button>
 	<button
 		on:click={() => {
 			project.elements.push({
 				type: "shape",
 				subtype: "circle",
-				position: [0, 0],
+				position: getCanvasCenter(),
 				color: { ...COLORS.yellow },
 				size: [100, 100],
 			});
@@ -72,7 +81,7 @@ function downloadImage(type: SupportedImage) {
 			project.elements.push({
 				type: "shape",
 				subtype: "triangle",
-				position: [0, 0],
+				position: getCanvasCenter(),
 				color: { ...COLORS.red },
 				size: [100, 86],
 			});
@@ -86,7 +95,7 @@ function downloadImage(type: SupportedImage) {
 			project.elements.push({
 				type: "shape",
 				subtype: "square",
-				position: [0, 0],
+				position: getCanvasCenter(),
 				color: { ...COLORS.purple },
 				size: [100, 100],
 			});
@@ -138,7 +147,7 @@ function downloadImage(type: SupportedImage) {
 					project.elements.push({
 						type: "image",
 						src: asset,
-						position: [0, 0],
+						position: getCanvasCenter(),
 						size: [100, 100],
 					});
 					project = project;

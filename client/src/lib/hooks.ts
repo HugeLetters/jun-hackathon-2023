@@ -9,27 +9,24 @@ export const drag: Action<
 	HTMLElement,
 	{ currentPosition: Position; canvas: HTMLElement; updatePosition: (position: Position) => void }
 > = function (node, options) {
-	node.draggable = true;
+	node.draggable = false;
 	let [startX, startY] = [0, 0];
 
 	let transform: string;
-	function onDrag(e: DragEvent) {
+	function onPointerMove(e: PointerEvent) {
 		node.style.transform = `translate(${e.clientX - startX}px, ${
 			e.clientY - startY
 		}px) ${transform}`;
 	}
-	function onDragStart(e: DragEvent) {
-		if (e.currentTarget instanceof HTMLElement) {
-			e.dataTransfer?.setDragImage(document.createElement("div"), 0, 0);
-		}
+	function onPointerDown(e: PointerEvent) {
 		transform = node.style.transform;
 		startX = e.clientX;
 		startY = e.clientY;
-		node.addEventListener("drag", onDrag);
+		window.addEventListener("pointermove", onPointerMove);
+		window.addEventListener("pointerup", onPointerUp, { once: true });
 	}
 
-	function onDragEnd(e: DragEvent) {
-		node.style.opacity = "";
+	function onPointerUp(e: PointerEvent) {
 		node.style.transform = transform;
 
 		const [currentX, currentY] = options.currentPosition;
@@ -41,18 +38,19 @@ export const drag: Action<
 			clamp(-0.9 * height, currentY + e.clientY - startY, bottom - top - 0.1 * height),
 		]);
 
-		node.removeEventListener("drag", onDrag);
+		window.removeEventListener("pointermove", onPointerMove);
 	}
-	node.addEventListener("dragstart", onDragStart);
-	node.addEventListener("dragend", onDragEnd);
+
+	node.addEventListener("pointerdown", onPointerDown);
 
 	return {
 		update(updatedOptions) {
 			options = updatedOptions;
 		},
 		destroy() {
-			node.removeEventListener("dragstart", onDragStart);
-			node.removeEventListener("dragend", onDragEnd);
+			node.removeEventListener("pointerdown", onPointerDown);
+			window.removeEventListener("pointermove", onPointerMove);
+			window.removeEventListener("pointerup", onPointerUp);
 		},
 	};
 };

@@ -6,6 +6,7 @@ export let element: ElementType<"image">;
 
 <img
 	src={element.src}
+	draggable="false"
 	alt=""
 	class="h-full w-full object-fill"
 />
