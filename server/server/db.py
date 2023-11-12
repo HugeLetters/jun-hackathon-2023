@@ -1,11 +1,6 @@
-# import psycopg2
 import os
 from dotenv import load_dotenv
-# from psycopg2.extras import DictCursor
 import asyncpg
-# from asyncpg import connect
-import asyncio
-
 
 load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
@@ -29,19 +24,36 @@ async def create_project(background_color):
         return result
 
 
-async def create_element(project_id, type, position_x, position_y, size_x, size_y, opacity):
+async def create_element(
+        project_id,
+        type,
+        position_x,
+        position_y,
+        size_x,
+        size_y,
+        opacity
+):
     async with DatabaseConnection() as db:
         result = await db.fetchval(
             '''
-            INSERT INTO 
-                elements(project_id, type, position_x, position_y, size_x, size_y, opacity) 
-            VALUES 
-                ($1, $2, $3, $4, $5, $6, $7) 
+            INSERT INTO
+                elements(
+                    project_id,
+                    type,
+                    position_x,
+                    position_y,
+                    size_x,
+                    size_y,
+                    opacity
+                )
+            VALUES
+                ($1, $2, $3, $4, $5, $6, $7)
             RETURNING id;
             ''',
             project_id, type, position_x, position_y, size_x, size_y, opacity
         )
         return result
+
 
 async def update_element(id: int, param, value):
     async with DatabaseConnection() as db:
@@ -56,10 +68,11 @@ async def update_element(id: int, param, value):
         )
         return result
 
-async  def delete_element(id: int):
+
+async def delete_element(id: int):
     async with DatabaseConnection() as db:
-        result = await db.fetchval(
-            f'''
+        await db.fetchval(
+            '''
                 DELETE FROM elements
                 WHERE id = $1;
             ''',
@@ -70,7 +83,7 @@ async  def delete_element(id: int):
 async def read_element(id: int):
     async with DatabaseConnection() as db:
         result = await db.fetchrow(
-            f'''
+            '''
                 SELECT * FROM elements WHERE id = $1;
             ''',
             id
@@ -79,3 +92,19 @@ async def read_element(id: int):
             result_dict = dict(result)
             return result_dict
         return result
+
+
+async def get_elements(project_id: int):
+    async with DatabaseConnection() as db:
+        result = await db.fetch(
+            '''
+                SELECT id FROM elements WHERE project_id = $1;
+            ''',
+            project_id
+        )
+        print('########')
+        print(result)
+        if result:
+            result_list = list(result)
+            return result_list
+        return []
