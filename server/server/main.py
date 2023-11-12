@@ -1,14 +1,23 @@
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from pydantic import BaseModel
+from pydantic_settings import BaseSettings
 from typing import Union
 import json
-import os
-
-
+import db
 
 app = FastAPI(root_path="/api/")
 print("Server started")
+
+
+class Settings(BaseSettings):
+    secret_key: str
+    database_url: str
+
+settings = Settings()
+
+app.secret_key = settings.secret_key
+database_url = settings.database_url
 
 class Item(BaseModel):
     name: str
@@ -36,9 +45,10 @@ def update_item(item_id: int, item: Item):
 
 
 @app.post("/canvas/")
-def create_canvas(background_color=None):
-    canvas_id = create_canvas(background_color)
-    return canvas_id
+async def post_canvas(background_color: str ='white') -> dict:
+    canvas_id = await db.create_canvas(background_color)
+    print(canvas_id)
+    return {"canvas_id": canvas_id}
 
 
 # generate json spec file - required for client

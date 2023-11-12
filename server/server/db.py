@@ -1,28 +1,30 @@
-import psycopg2
+# import psycopg2
 import os
 from dotenv import load_dotenv
-from psycopg2.extras import DictCursor
+# from psycopg2.extras import DictCursor
+import asyncpg
+# from asyncpg import connect
+import asyncio
+
 
 load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
 
 
 class DatabaseConnection:
-    def __enter__(self):
-        self.db = psycopg2.connect(DATABASE_URL)
-        self.cursor = self.db.cursor(cursor_factory=DictCursor)
-        return self.cursor
+    async def __aenter__(self):
+        self.db = await asyncpg.connect(DATABASE_URL)
+        return self.db
 
-    def __exit__(self, exc_type, exc_value, traceback):
-        self.db.commit()
-        self.cursor.close()
-        self.db.close()
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        await self.db.close()
 
 
-def create_canvas(name, background_color):
-    with DatabaseConnection() as cursor:
-        cursor.execute(
-            "INSERT INTO canvas(background_color) VALUES (%s, %s) RETURNING id",
-            (name, background_color,)
+async def create_canvas(background_color):
+    async with DatabaseConnection() as db:
+        result = await db.fetchval(
+            "INSERT INTO canvas(background_color) VALUES ($1) RETURNING id;",
+            background_color
         )
-        return cursor.fetchone()[0]
+        return result
+
