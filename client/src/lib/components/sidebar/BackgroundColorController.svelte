@@ -1,5 +1,6 @@
 <script lang="ts">
 import type { BgColor, HslColor } from "$lib/type";
+import { COLORS } from "$lib/utils";
 import { createSlider, melt } from "@melt-ui/svelte";
 
 export let color: BgColor;
@@ -16,24 +17,27 @@ const {
 		if (value === undefined) return next;
 
 		if (color.type === "hsl") color[property] = value;
-		else color = { type: "hsl", color: 0, lightness: 50, saturation: 100, [property]: value };
+		else color = { ...COLORS.white, [property]: value };
 
 		return next;
 	},
 	min: 0,
 	max: property === "color" ? 360 : 100,
 });
+$: if (color.type === "hsl") {
+	$rangeValue = [color[property]];
+}
 </script>
 
 <label>
 	<span>{label}</span>
 	<div
 		use:melt={$root}
-		class="relative flex h-14 w-56 items-center"
+		class="relative flex h-14 w-full items-center"
 	>
 		<div
 			class="block h-1 w-full rounded-full {property === 'color'
-				? 'bg-[linear-gradient(90deg,red,orange,yellow,green,blue,purple,red)]'
+				? 'bg-[linear-gradient(90deg,hsl(0,100%,50%)_0%,hsl(51,100%,50%)_14%,hsl(103,100%,50%)_28%,hsl(154,100%,50%)_42%,hsl(205,100%,50%)_57%,hsl(257,100%,50%)_71%,hsl(308,100%,50%)_85%,hsl(360,100%,50%)_100%)]'
 				: 'bg-gradient-to-r from-neutral-700 to-white'}"
 		>
 			<div
@@ -41,7 +45,10 @@ const {
 				class="h-1"
 			/>
 		</div>
-		<button use:melt={$thumb()}>
+		<button
+			use:melt={$thumb()}
+			class="transition-[left] focus-within:transition-none"
+		>
 			<div
 				class="aspect-square h-5 w-5 rounded-full bg-purple-300"
 				style="{property === 'color'

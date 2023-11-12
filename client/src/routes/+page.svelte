@@ -5,7 +5,7 @@ import TextElementController from "$lib/components/TextElementController.svelte"
 import BackgroundController from "$lib/components/sidebar/BackgroundController.svelte";
 import { getLastProjectStore } from "$lib/hooks";
 import type { ElementType } from "$lib/type";
-import { colorToString } from "$lib/utils";
+import { COLORS, colorToString } from "$lib/utils";
 import { toJpeg, toPng } from "html-to-image";
 import { jsPDF } from "jspdf";
 
@@ -43,7 +43,7 @@ function updateElementList() {
 </script>
 
 <div class="flex min-h-screen">
-	<div class="flex w-24 flex-col bg-neutral-900 p-5">
+	<div class="flex w-28 flex-col bg-neutral-900 p-5">
 		<BackgroundController bind:background={$project.background} />
 		<button
 			on:click={() => {
@@ -95,7 +95,7 @@ function updateElementList() {
 		<button
 			on:click={() => {
 				$project.elements = [];
-				$project.background = { color: { type: "color", color: "white" } };
+				$project.background = { color: COLORS.white };
 			}}
 		>
 			clear
@@ -122,7 +122,7 @@ function updateElementList() {
 			{/each}
 		</div>
 	</div>
-	<div class="flex grow flex-col">
+	<div class="flex grow flex-col items-center p-4">
 		<div>
 			header ui
 			{#if focusedElement}

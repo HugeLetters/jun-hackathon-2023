@@ -1,6 +1,6 @@
 import type { Action } from "svelte/action";
 import type { Background, ElementType, Position } from "./type";
-import { clamp } from "./utils";
+import { COLORS, clamp } from "./utils";
 import { persisted } from "svelte-persisted-store";
 import { getContext, setContext } from "svelte";
 import type { Writable } from "svelte/store";
@@ -67,7 +67,7 @@ export function getLastProjectStore(): Writable<SavedProject> {
 	if (store) return store;
 
 	const newStore = persisted<SavedProject>("current-project", {
-		background: { color: { type: "color", color: "white" } },
+		background: { color: COLORS.white },
 		elements: [],
 	});
 	setContext(lastProjectStoreContextKey, newStore);

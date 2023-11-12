@@ -7,8 +7,7 @@ export type GradientColor = {
 	colors: [number, number, ...number[]];
 };
 export type HslColor = { type: "hsl"; color: number; saturation: number; lightness: number };
-export type StringColor = { type: "color"; color: string };
-export type BgColor = GradientColor | HslColor | StringColor;
+export type BgColor = GradientColor | HslColor;
 export type ElementType<TKind extends ElementKind = ElementKind> = TKind extends TKind
 	? {
 			type: TKind;
