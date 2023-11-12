@@ -1,13 +1,12 @@
 <script lang="ts">
 import ImageIcon from "$lib/components/icons/Image.svelte";
 import { turn } from "$lib/hooks";
-import type { ElementType, Position } from "$lib/type";
+import type { CreateElementFn } from "$lib/type";
 import { createPopover, melt } from "@melt-ui/svelte";
 import { onMount } from "svelte";
 
 export let assets: string[];
-export let canvasCenter: Position;
-export let createElement: (element: ElementType<"image">) => void;
+export let createElement: CreateElementFn;
 
 const {
 	elements: { trigger, content },
@@ -41,17 +40,12 @@ onMount(() => {
 	<div
 		use:melt={$content}
 		transition:turn={{ duration: 150, offsetOrigin: 15, rotateTo: 50 }}
-		class="grid w-96 translate-x-5 grid-cols-2 gap-4 overflow-y-auto rounded-lg bg-neutral-900 p-4"
+		class="grid w-80 translate-x-5 grid-cols-2 gap-4 overflow-y-auto rounded-lg bg-neutral-900 p-4"
 	>
 		{#each assets as asset (asset)}
 			<button
 				on:click={() => {
-					createElement({
-						type: "image",
-						src: asset,
-						position: canvasCenter,
-						size: [100, 100],
-					});
+					createElement({ type: "image", src: asset });
 					$open = false;
 				}}
 				class="aspect-square basis-1/2 overflow-hidden rounded-lg bg-white/10"
@@ -75,7 +69,7 @@ onMount(() => {
 }
 ::-webkit-scrollbar {
 	background-color: theme("colors.black/20");
-	border-radius: theme("borderRadius.md");
+	border-radius: theme("borderRadius.full");
 	width: theme("width.2");
 }
 </style>

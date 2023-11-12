@@ -1,8 +1,8 @@
 <script lang="ts">
-import Upload from "$lib/components/icons/Upload.svelte";
-import Pdf from "$lib/components/icons/Pdf.svelte";
 import Jpg from "$lib/components/icons/Jpg.svelte";
+import Pdf from "$lib/components/icons/Pdf.svelte";
 import Png from "$lib/components/icons/Png.svelte";
+import Upload from "$lib/components/icons/Upload.svelte";
 import { turn } from "$lib/hooks";
 import { createPopover, melt } from "@melt-ui/svelte";
 import { toJpeg, toPng } from "html-to-image";

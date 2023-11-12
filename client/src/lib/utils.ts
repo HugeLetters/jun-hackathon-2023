@@ -46,3 +46,7 @@ export function randomArrayElement<T>(arr: T[]) {
 export function randomRecordEntry<T>(record: Record<string, T>) {
 	return randomArrayElement(Object.values(record));
 }
+
+export function includes<T>(arr: readonly T[], value: unknown): value is T {
+	return arr.includes(value as T);
+}
