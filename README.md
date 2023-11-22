@@ -1,6 +1,6 @@
 # Important PSA
 
-THe complete project with backend was moved to archive branch - main branch now consists only of client code
+The complete project with backend was moved to `archive` branch - main branch now consists only of client code
 
 # Team #12
 
