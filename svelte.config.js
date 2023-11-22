@@ -1,7 +1,7 @@
-import { preprocessMeltUI } from '@melt-ui/pp';
-import { vitePreprocess } from '@sveltejs/kit/vite';
-import sequence from 'svelte-sequential-preprocessor';
-import adapter from '@sveltejs/adapter-node';
+import { preprocessMeltUI } from "@melt-ui/pp";
+import { vitePreprocess } from "@sveltejs/kit/vite";
+import sequence from "svelte-sequential-preprocessor";
+import adapter from "@sveltejs/adapter-auto";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -16,10 +16,10 @@ const config = {
 		adapter: adapter(),
 		typescript: {
 			config(config) {
-				config.include.push('../scripts**/*.js', '../scripts**/*.ts');
-			}
-		}
-	}
+				config.include.push("../scripts**/*.js", "../scripts**/*.ts");
+			},
+		},
+	},
 };
 
 export default config;
