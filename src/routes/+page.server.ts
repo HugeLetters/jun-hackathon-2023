@@ -1,5 +1,5 @@
 import { readdir } from "node:fs/promises";
 
 export function load() {
-	return { assets: readdir("/client/static") };
+	return { assets: readdir("static") };
 }

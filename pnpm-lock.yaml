@@ -11,9 +11,6 @@ dependencies:
   '@melt-ui/svelte':
     specifier: ^0.61.1
     version: 0.61.1(svelte@4.2.3)
-  '@tanstack/svelte-query':
-    specifier: ^5.8.1
-    version: 5.8.1(svelte@4.2.3)
   autoprefixer:
     specifier: ^10.4.16
     version: 10.4.16(postcss@8.4.31)
@@ -26,9 +23,6 @@ dependencies:
   jspdf:
     specifier: ^2.5.1
     version: 2.5.1
-  openapi-fetch:
-    specifier: ^0.8.1
-    version: 0.8.1
   postcss:
     specifier: ^8.4.31
     version: 8.4.31
@@ -626,19 +620,6 @@ packages:
     resolution: {integrity: sha512-FaruWX6KdudYloq1AHD/4nU+UsMTdNE8CKyrseXWEcgjDAbvkwJg2QGPAnfIJLIWsjZOSPLOAykK6fuYp4vp4A==}
     dependencies:
       tslib: 2.6.2
-
-  /@tanstack/query-core@5.8.1:
-    resolution: {integrity: sha512-Y0enatz2zQXBAsd7XmajlCs+WaitdR7dIFkqz9Xd7HL4KV04JOigWVreYseTmNH7YFSBSC/BJ9uuNp1MAf+GfA==}
-    dev: false
-
-  /@tanstack/svelte-query@5.8.1(svelte@4.2.3):
-    resolution: {integrity: sha512-6+HMLdVSRWu2Dv9U/lSAFc8B5qYIGkbgLI7XJu3r8A+BqddviFv9vNtopYKE9xSnJ2Vm8zmnEzJ3TlfODUP5Ng==}
-    peerDependencies:
-      svelte: '>=3 <5'
-    dependencies:
-      '@tanstack/query-core': 5.8.1
-      svelte: 4.2.3
-    dev: false
 
   /@types/cookie@0.5.4:
     resolution: {integrity: sha512-7z/eR6O859gyWIAjuvBWFzNURmf2oPBmJlfVWkwehU5nzIyjwBsTh7WMmEEV4JFnHuQ3ex4oyTvfKzcyJVDBNA==}
@@ -1840,16 +1821,6 @@ packages:
     resolution: {integrity: sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==}
     dependencies:
       wrappy: 1.0.2
-
-  /openapi-fetch@0.8.1:
-    resolution: {integrity: sha512-xmzMaBCydPTMd0TKy4P2DYx/JOe9yjXtPIky1n1GV7nJJdZ3IZgSHvAWVbe06WsPD8EreR7E97IAiskPr6sa2g==}
-    dependencies:
-      openapi-typescript-helpers: 0.0.4
-    dev: false
-
-  /openapi-typescript-helpers@0.0.4:
-    resolution: {integrity: sha512-Q0MTapapFAG993+dx8lNw33X6P/6EbFr31yNymJHq56fNc6dODyRm8tWyRnGxuC74lyl1iCRMV6nQCGQsfVNKg==}
-    dev: false
 
   /openapi-typescript@6.7.1:
     resolution: {integrity: sha512-Q3Ltt0KUm2smcPrsaR8qKmSwQ1KM4yGDJVoQdpYa0yvKPeN8huDx5utMT7DvwvJastHHzUxajjivK3WN2+fobg==}

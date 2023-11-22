@@ -25,7 +25,7 @@ export let createElement: CreateElementFn;
 	<button
 		class="group w-full text-zinc-200"
 		on:click={() => {
-			createElement({ type: "text", color: COLORS.black, content: "text", fontSize: 1 });
+			createElement({ type: "text", color: { ...COLORS.black }, content: "text", fontSize: 1 });
 		}}
 	>
 		<div class="w-full rounded-full px-4 py-2 transition-colors group-focus-within:bg-zinc-600">

@@ -24,6 +24,7 @@ const {
 		value = next;
 		return next;
 	},
+	orientation: "horizontal",
 });
 
 const options = ["left", "center", "right"] as const satisfies readonly NonNullable<Align>[];

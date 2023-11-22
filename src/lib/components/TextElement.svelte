@@ -19,7 +19,6 @@ onMount(() => {
 	class="h-full w-full cursor-[inherit] resize-none overflow-hidden bg-transparent outline-none transition-colors group-focus-within:cursor-text"
 	class:italic={element.italic}
 	class:underline={element.underline}
-	style="text-align: {element.align ?? 'center'}; font-family: {element.font}; 
-		color: {colorToString(element.color)}; font-size: {element.fontSize}rem;
-		font-weight: {element.bold ? 900 : 400};"
+	style="text-align: {element.align ?? 'center'}; font-weight: {element.bold ? 900 : 400};
+		color: {colorToString(element.color)}; font-size: {element.fontSize}rem;"
 />
