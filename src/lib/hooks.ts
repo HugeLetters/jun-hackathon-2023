@@ -2,9 +2,9 @@ import { getContext, setContext } from "svelte";
 import { persisted } from "svelte-persisted-store";
 import type { Action } from "svelte/action";
 import type { Writable } from "svelte/store";
+import type { FadeParams, TransitionConfig } from "svelte/transition";
 import type { Position, SavedProject } from "./type";
 import { COLORS, clamp } from "./utils";
-import type { FadeParams, TransitionConfig } from "svelte/transition";
 
 export const drag: Action<
 	HTMLElement,
@@ -85,8 +85,9 @@ export const turn = (
 
 	return {
 		css(t, u) {
-			return `transform: ${transform === "none" ? "" : transform} rotateY(${rotateTo * u}deg); 
-			transform-origin: -${offsetOrigin}px; opacity: ${opacity * t};`;
+			return `transform-origin: -${offsetOrigin}px; opacity: ${opacity * t};
+			transform: perspective(5000px) rotateY(${rotateTo * u}deg) ${transform === "none" ? "" : transform};
+			`;
 		},
 		delay,
 		duration,
