@@ -5,13 +5,13 @@ import Png from "$lib/components/icons/Png.svelte";
 import Upload from "$lib/components/icons/Upload.svelte";
 import { turn } from "$lib/hooks";
 import { createPopover, melt } from "@melt-ui/svelte";
-import { toJpeg, toPng } from "html-to-image";
-import { jsPDF } from "jspdf";
 
 export let canvas: HTMLElement;
 
 type SupportedImage = "jpg" | "png";
-function getConverter(type: SupportedImage) {
+async function getConverter(type: SupportedImage) {
+	const { toJpeg, toPng } = await import("html-to-image");
+
 	switch (type) {
 		case "jpg":
 			return toJpeg;
@@ -24,7 +24,9 @@ function getConverter(type: SupportedImage) {
 	}
 }
 
-function exportPdf() {
+async function exportPdf() {
+	const { jsPDF } = await import("jspdf");
+
 	const { width, height } = canvas.getBoundingClientRect();
 	const doc = new jsPDF({ orientation: "landscape", format: [width, height] });
 	doc.html(canvas, {
@@ -35,12 +37,14 @@ function exportPdf() {
 	});
 }
 function exportImage(type: SupportedImage) {
-	getConverter(type)(canvas).then((image) => {
-		const anchor = document.createElement("a");
-		anchor.href = image;
-		anchor.download = `project.${type}`;
-		anchor.click();
-	});
+	getConverter(type)
+		.then((converter) => converter(canvas))
+		.then((image) => {
+			const anchor = document.createElement("a");
+			anchor.href = image;
+			anchor.download = `project.${type}`;
+			anchor.click();
+		});
 }
 
 const {
