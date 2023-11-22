@@ -85,9 +85,8 @@ export const turn = (
 
 	return {
 		css(t, u) {
-			return `transform: ${transform} rotateY(${
-				rotateTo * u
-			}deg); transform-origin: -${offsetOrigin}px; opacity: ${opacity * t};`;
+			return `transform: ${transform === "none" ? "" : transform} rotateY(${rotateTo * u}deg); 
+			transform-origin: -${offsetOrigin}px; opacity: ${opacity * t};`;
 		},
 		delay,
 		duration,
